@@ -14,7 +14,7 @@ using System.Web.Script.Serialization;
 
 namespace CdmClienteApi.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController :  Controller
     {
 
         //Dúvidas me chama no whats: 98559-0116
