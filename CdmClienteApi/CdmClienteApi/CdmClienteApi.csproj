@@ -179,6 +179,16 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Generico.Aplicacao\Generico.Aplicacao.csproj">
+      <Project>{2f22753b-e874-41e8-b297-932b8f031dac}</Project>
+      <Name>Generico.Aplicacao</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Generico.Dominio\Generico.Dominio.csproj">
+      <Project>{3e1f4f03-349b-4b07-b962-0cabf7c91b1e}</Project>
+      <Name>Generico.Dominio</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

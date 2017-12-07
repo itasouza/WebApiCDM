@@ -1,0 +1,5 @@
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Dominio\bin\Debug\Generico.Dominio.dll
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Dominio\bin\Debug\Generico.Dominio.pdb
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Dominio\obj\Debug\Generico.Dominio.csprojResolveAssemblyReference.cache
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Dominio\obj\Debug\Generico.Dominio.dll
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Dominio\obj\Debug\Generico.Dominio.pdb

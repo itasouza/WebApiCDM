@@ -176,6 +176,8 @@ F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\ros
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\CdmClienteApi.dll.config
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\CdmClienteApi.dll
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\CdmClienteApi.pdb
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\Generico.Aplicacao.dll
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\Generico.Dominio.dll
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\Microsoft.AI.Agent.Intercept.dll
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\Microsoft.AI.DependencyCollector.dll
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\Microsoft.AI.PerfCounterCollector.dll
@@ -195,6 +197,11 @@ F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\Sys
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\System.Web.Webpages.Deployment.dll
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\System.Web.Webpages.dll
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\System.Web.Webpages.Razor.dll
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\Generico.Repositorio.dll
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\Npgsql.dll
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\System.Threading.Tasks.Extensions.dll
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\Generico.Aplicacao.pdb
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\Generico.Dominio.pdb
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\Microsoft.AI.DependencyCollector.xml
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\Microsoft.AI.ServerTelemetryChannel.xml
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\Microsoft.AI.Web.xml
@@ -211,6 +218,9 @@ F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\New
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\System.Net.Http.Formatting.xml
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\System.Web.Http.xml
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\System.Web.Http.WebHost.xml
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\Generico.Repositorio.pdb
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\Npgsql.xml
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\bin\System.Threading.Tasks.Extensions.xml
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\obj\Debug\CdmClienteApi.csprojResolveAssemblyReference.cache
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\obj\Debug\CdmClienteApi.dll
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\CdmClienteApi\obj\Debug\CdmClienteApi.pdb

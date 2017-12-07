@@ -1,9 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Generico.Aplicacao;
+
+
 
 namespace CdmClienteApi.Controllers
 {
@@ -12,17 +16,21 @@ namespace CdmClienteApi.Controllers
     {
 
 
-        //http://localhost:7630/api/unidade/consulta/carrinho/122865/PA00058:1,MA00068:1,PA00004:1/41706670/false
-        [HttpGet]
-        [Route("unidade/consulta/carrinho/{numerocarrinho}/{itens}/{cep}/{retiralocal}")]
-        public HttpResponseMessage ConsultaUnidadeAtendimento(string numerocarrinho, string[] itens, string cep, string retiralocal)
+        //http://localhost:49764/api/unidade/carrinho/consultaUnidadeAtendimento
+        [HttpPost]
+        [Route("unidade/carrinho/ConsultaUnidadeAtendimento")]
+        public HttpResponseMessage ConsultaUnidadeAtendimento(ConsultaUnidadeAtendimentoModel consultaAtendimento)
         {
          
             try
             {
-               var tTabela = "";
-               var listar = "";
-               return Request.CreateResponse(HttpStatusCode.OK, new { usuario = listar.ToArray() });
+                string numeroCarrinho = consultaAtendimento.NumeroCarrinho.ToString();
+                string cep = consultaAtendimento.Cep;
+                bool retiraLocal = consultaAtendimento.RetiraNoLocal;
+
+                var tTabela = new ConsultaUnidadeEstoque();
+                var listar = tTabela.SelecionaUnidadeAtendimento(cep);
+                return Request.CreateResponse(HttpStatusCode.OK, new { dados = listar.ToArray() });
             }
             catch (Exception ex)
             {
@@ -34,31 +42,29 @@ namespace CdmClienteApi.Controllers
 
 
 
+        public  class ConsultaUnidadeAtendimentoModel
+        {
+            [JsonProperty("numeroCarrinho")]
+            public long NumeroCarrinho { get; set; }
+
+            [JsonProperty("itens")]
+            public List<Carrinho> Itens { get; set; }
+
+            [JsonProperty("cep")]
+            public string Cep { get; set; }
+
+            [JsonProperty("retiraNoLocal")]
+            public bool RetiraNoLocal { get; set; }
+        }
+
         public class Carrinho
         {
-            public string numerocarrinho { get; set; }
-            public Itens itens { get; set; }
-            public string cep { get; set; }
-            public string retiralocal { get; set; }
-
-            public Carrinho(string NumeroCarrinho, string Cep, string RetiraLocal)
-            {
-                this.numerocarrinho = NumeroCarrinho;
-                this.cep = Cep;
-                this.retiralocal = RetiraLocal;
-            }
-
+            [JsonProperty("codigo")]
+            public string Codigo { get; set; }
+            [JsonProperty("qtd")]
+            public int Qtd { get; set; }
         }
 
-        public class Itens
-        {
-            public string itens { get; set; }
-
-            public Itens(string Itens)
-            {
-                this.itens = Itens;
-            }
-        }
 
 
     }
