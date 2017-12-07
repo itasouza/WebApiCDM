@@ -6,8 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Generico.Aplicacao;
-
-
+using Generico.Dominio;
 
 namespace CdmClienteApi.Controllers
 {
@@ -19,12 +18,13 @@ namespace CdmClienteApi.Controllers
         //http://localhost:49764/api/unidade/carrinho/consultaUnidadeAtendimento
         [HttpPost]
         [Route("unidade/carrinho/ConsultaUnidadeAtendimento")]
-        public HttpResponseMessage ConsultaUnidadeAtendimento(ConsultaUnidadeAtendimentoModel consultaAtendimento)
+        public HttpResponseMessage ConsultaUnidadeAtendimento(TB_DADOS_API consultaAtendimento)
         {
          
             try
             {
-                string numeroCarrinho = consultaAtendimento.NumeroCarrinho.ToString();
+
+                string numeroCarrinho =   consultaAtendimento.NumeroCarrinho.ToString();
                 string cep = consultaAtendimento.Cep;
                 bool retiraLocal = consultaAtendimento.RetiraNoLocal;
 
@@ -42,28 +42,40 @@ namespace CdmClienteApi.Controllers
 
 
 
-        public  class ConsultaUnidadeAtendimentoModel
+
+        //http://localhost:49764/api/unidade/carrinho/GravaPedido/3/115873/ABERTO
+        //http://localhost:49764/api/unidade/carrinho/GravaPedido/3/115873/CANCELADO
+        [HttpPost]
+        [Route("unidade/carrinho/GravaPedido/{idcdm}/{idpedido}/{status}")]
+        public HttpResponseMessage GravaPedido(string idcdm, string idpedido, string status)
         {
-            [JsonProperty("numeroCarrinho")]
-            public long NumeroCarrinho { get; set; }
+            string token = "";
+            string pedido = "";
+            var tabela = new GravaPedidoAplicacao();
 
-            [JsonProperty("itens")]
-            public List<Carrinho> Itens { get; set; }
+            try
+            {
+                if (status == "ABERTO")
+                {
+                     token =  tabela.ConsultaUsuario("http://hml.ezitus.com/matriz/services/auth/login");
+                     pedido = tabela.ConsultaPedido("http://hml.ezitus.com/matriz/services/pedidos/porNumero", idpedido, token);
+                }
 
-            [JsonProperty("cep")]
-            public string Cep { get; set; }
+                if (status == "CANCELADO")
+                {
+                    //cancelar o pedido
+                }
 
-            [JsonProperty("retiraNoLocal")]
-            public bool RetiraNoLocal { get; set; }
+
+                    return Request.CreateResponse(HttpStatusCode.OK, new { dados = pedido.ToArray() });
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+
         }
 
-        public class Carrinho
-        {
-            [JsonProperty("codigo")]
-            public string Codigo { get; set; }
-            [JsonProperty("qtd")]
-            public int Qtd { get; set; }
-        }
 
 
 

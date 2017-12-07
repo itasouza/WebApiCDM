@@ -11,3 +11,5 @@ F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Aplicacao\bi
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Aplicacao\obj\Debug\Generico.Aplicacao.csprojResolveAssemblyReference.cache
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Aplicacao\obj\Debug\Generico.Aplicacao.dll
 F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Aplicacao\obj\Debug\Generico.Aplicacao.pdb
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Aplicacao\bin\Debug\Newtonsoft.Json.dll
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Aplicacao\bin\Debug\Newtonsoft.Json.xml
