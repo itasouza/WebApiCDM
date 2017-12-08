@@ -188,6 +188,10 @@
       <Project>{3e1f4f03-349b-4b07-b962-0cabf7c91b1e}</Project>
       <Name>Generico.Dominio</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Generico.Repositorio\Generico.Repositorio.csproj">
+      <Project>{1AF38036-976E-4FB7-A98C-CEAA3D91173F}</Project>
+      <Name>Generico.Repositorio</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

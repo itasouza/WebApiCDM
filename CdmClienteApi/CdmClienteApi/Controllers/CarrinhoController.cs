@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Generico.Aplicacao;
 using Generico.Dominio;
+using Generico.Repositorio;
 
 namespace CdmClienteApi.Controllers
 {
@@ -24,12 +25,8 @@ namespace CdmClienteApi.Controllers
             try
             {
 
-                string numeroCarrinho =   consultaAtendimento.NumeroCarrinho.ToString();
-                string cep = consultaAtendimento.Cep;
-                bool retiraLocal = consultaAtendimento.RetiraNoLocal;
-
                 var tTabela = new ConsultaUnidadeEstoque();
-                var listar = tTabela.SelecionaUnidadeAtendimento(cep);
+                var listar = tTabela.SelecionaUnidadeAtendimento(consultaAtendimento);
                 return Request.CreateResponse(HttpStatusCode.OK, new { dados = listar.ToArray() });
             }
             catch (Exception ex)
@@ -39,6 +36,9 @@ namespace CdmClienteApi.Controllers
             }
 
         }
+
+
+
 
 
 
