@@ -47,6 +47,7 @@
     <Compile Include="TB_CARRINHO.cs" />
     <Compile Include="TB_DADOS_API.cs" />
     <Compile Include="TB_FAIXA_ATENDIMENTO.cs" />
+    <Compile Include="TB_PEDIDO.cs" />
     <Compile Include="TB_UNIDADE.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

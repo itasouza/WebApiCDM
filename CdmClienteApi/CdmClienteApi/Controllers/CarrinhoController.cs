@@ -14,6 +14,8 @@ namespace CdmClienteApi.Controllers
     [RoutePrefix("api")]
     public class CarrinhoController : ApiController
     {
+        //caminho inicial da api
+        string UrlApi = "http://hml.ezitus.com/matriz/";
 
          //aqui a api recebe um array de dados
           //  {
@@ -67,9 +69,11 @@ namespace CdmClienteApi.Controllers
                 if (status == "ABERTO")
                 {
                     //consulta o usuario e pega o token
-                     token =  tabela.ConsultaUsuario("http://hml.ezitus.com/matriz/services/auth/login");
+                     string teste = UrlApi + "services/auth/login";
+
+                     token =  tabela.ConsultaUsuario(UrlApi+"services/auth/login");
                     //consulta o pedido e grava no banco 
-                     pedido = tabela.ConsultaPedido("http://hml.ezitus.com/matriz/services/pedidos/porNumero", idpedido, token);
+                     pedido = tabela.ConsultaPedido(UrlApi+"services/pedidos/porNumero", idpedido, token);
                     //abre o pedido, deixando disponivel para a unidade
                      var tTabela = new ConsultaUnidadeEstoque();
                          tTabela.AbrePedido(idpedido);
