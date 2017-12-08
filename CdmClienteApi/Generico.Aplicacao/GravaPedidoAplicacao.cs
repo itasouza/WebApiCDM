@@ -10,6 +10,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Web;
 using System.Web.Script.Serialization;
+using System.Configuration;
 
 
 
@@ -17,6 +18,8 @@ namespace Generico.Aplicacao
 {
    public  class GravaPedidoAplicacao
     {
+
+
 
         //classe para recebecer os dados lidos
         public class usuario
@@ -26,8 +29,6 @@ namespace Generico.Aplicacao
             public Answer answer { get; set; }
 
         }
-
-
 
 
         //classe que recebe os dados

@@ -37,8 +37,9 @@ namespace Generico.Aplicacao
             //se encontrou, então vai ser maior que zero, vai consultar o estoque
             if (retorno > 0)
             {
+               
 
-                foreach(var item in dados.Itens)
+                foreach (var item in dados.Itens)
                 {
                     var retornoProduto = 0;
                     var strQueryProduto = "";
@@ -92,6 +93,25 @@ namespace Generico.Aplicacao
 
         }
 
+
+        public void CancelamentoPedido(string NumeroPedido)
+        {
+            var strQuery = string.Format("update pedidos set status = 'CANCELADO' where numero_pedido = '{0}' ", NumeroPedido);
+            using (contexto = new Contexto())
+            {
+                contexto.ExecutaComando(strQuery);
+            }
+        }
+
+
+        public void AbrePedido(string NumeroPedido)
+        {
+            var strQuery = string.Format("update pedidos set status = 'ABERTO' where numero_pedido = '{0}' ", NumeroPedido);
+            using (contexto = new Contexto())
+            {
+                contexto.ExecutaComando(strQuery);
+            }
+        }
 
 
         private List<TB_UNIDADE> TransformaReaderEmListaObjetos(NpgsqlDataReader reader)

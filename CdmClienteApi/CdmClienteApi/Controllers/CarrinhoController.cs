@@ -15,7 +15,19 @@ namespace CdmClienteApi.Controllers
     public class CarrinhoController : ApiController
     {
 
-
+         //aqui a api recebe um array de dados
+          //  {
+          //  "numeroCarrinho":122865,
+          //  "itens":[
+          //      {"codigo":"PA00058","qtd":1},
+          //      {"codigo":"MA00068","qtd":1},
+          //      {"codigo":"PA00004","qtd":1},
+          //      {"codigo":"PA00009","qtd":1}
+          //  ],
+          //  "cep":"08914444",
+          //  "retiradaNoLocal":false
+          //}
+    
         //http://localhost:49764/api/unidade/carrinho/consultaUnidadeAtendimento
         [HttpPost]
         [Route("unidade/carrinho/ConsultaUnidadeAtendimento")]
@@ -24,7 +36,7 @@ namespace CdmClienteApi.Controllers
          
             try
             {
-
+                //envia todos os dados para validação
                 var tTabela = new ConsultaUnidadeEstoque();
                 var listar = tTabela.SelecionaUnidadeAtendimento(consultaAtendimento);
                 return Request.CreateResponse(HttpStatusCode.OK, new { dados = listar.ToArray() });
@@ -36,9 +48,6 @@ namespace CdmClienteApi.Controllers
             }
 
         }
-
-
-
 
 
 
@@ -57,17 +66,24 @@ namespace CdmClienteApi.Controllers
             {
                 if (status == "ABERTO")
                 {
+                    //consulta o usuario e pega o token
                      token =  tabela.ConsultaUsuario("http://hml.ezitus.com/matriz/services/auth/login");
+                    //consulta o pedido e grava no banco 
                      pedido = tabela.ConsultaPedido("http://hml.ezitus.com/matriz/services/pedidos/porNumero", idpedido, token);
+                    //abre o pedido, deixando disponivel para a unidade
+                     var tTabela = new ConsultaUnidadeEstoque();
+                         tTabela.AbrePedido(idpedido);
                 }
 
                 if (status == "CANCELADO")
                 {
                     //cancelar o pedido
+                    var tTabela = new ConsultaUnidadeEstoque();
+                        tTabela.CancelamentoPedido(idpedido);
                 }
 
 
-                    return Request.CreateResponse(HttpStatusCode.OK, new { dados = pedido.ToArray() });
+                 return Request.CreateResponse(HttpStatusCode.OK, new { dados = pedido.ToArray() });
             }
             catch (Exception ex)
             {
