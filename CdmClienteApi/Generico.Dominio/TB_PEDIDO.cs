@@ -159,7 +159,7 @@ namespace Generico.Dominio
         public class Itens
         {
             public string idItemPedido { get; set; }
-            public string item { get; set; }
+            public int item { get; set; }
             public string plano { get; set; }
             public Produto produto { get; set; }
             public string descricaoItem { get; set; }

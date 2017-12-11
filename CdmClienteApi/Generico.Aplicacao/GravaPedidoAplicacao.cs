@@ -187,6 +187,45 @@ namespace Generico.Aplicacao
 
 
 
+        public string GravaItensPedido(Itens itens)
+        {
+            int retorno = 0;
+            var strQuery = new StringBuilder();
+            int QtdRegistro = itens.item;
+
+            for (int i = 0; i <= QtdRegistro; i++)
+            {
+                strQuery.Clear();
+                strQuery.Append("INSERT INTO itens_pedido (numero_pedido,item,id_plano,descricao_item,valor_unitario,qtde, valor_total,pontos,id_produto  ")
+                            .Append("VALUES (")
+                            .Append(itens.idItemPedido).Append(",")
+                            .Append(itens.item).Append(",")
+                            .Append("'").Append(itens.plano).Append("',")
+                            .Append("'").Append(itens.descricaoItem).Append("',")
+                            .Append("'").Append(itens.valorUnitario).Append("',")
+                            .Append("'").Append(itens.qtde).Append("',")
+                            .Append("'").Append(itens.valorTotal).Append("',")
+                            .Append("'").Append(itens.pontos).Append("',")
+                            .Append("'").Append(itens.produto.id).Append("',")
+                            .Append(")");
+
+                using (contexto = new Contexto())
+                {
+                    var reader = contexto.ExecutaComandoComRetorno(strQuery.ToString());
+                    while (reader.Read())
+                    {
+                        //retornar o ID do cliente inserido
+                        retorno = Convert.ToInt32(reader["id_cadastro"]);
+                    }
+                    reader.Close();
+                }
+            }
+
+            return retorno.ToString();
+        }
+
+
+
         public string GravaCadastro(Cadastro cadastro)
         {
             int retorno = 0;
