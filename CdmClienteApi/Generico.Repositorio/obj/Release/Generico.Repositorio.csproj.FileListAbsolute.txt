@@ -1,0 +1,8 @@
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Repositorio\bin\Release\Generico.Repositorio.dll
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Repositorio\bin\Release\Generico.Repositorio.pdb
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Repositorio\bin\Release\Npgsql.dll
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Repositorio\bin\Release\System.Threading.Tasks.Extensions.dll
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Repositorio\bin\Release\Npgsql.xml
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Repositorio\bin\Release\System.Threading.Tasks.Extensions.xml
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Repositorio\obj\Release\Generico.Repositorio.dll
+F:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Repositorio\obj\Release\Generico.Repositorio.pdb

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Generico.Dominio
 {
@@ -29,15 +30,18 @@ namespace Generico.Dominio
         //classe para recebecer os dados lidos do pedido
         public class Pedido
         {
+
             public string success { get; set; }
+
             public string errorMessage { get; set; }
+
             public AnswerPedido answer { get; set; }
-            public ClientePedido cliente { get; set; }
         }
 
         public class AnswerPedido
         {
             public string numeroPedido { get; set; }
+            public ClientePedido cliente { get; set; }
         }
 
         public class ClientePedido
@@ -186,3 +190,4 @@ namespace Generico.Dominio
 
     }
 }
+

@@ -14,23 +14,23 @@ namespace CdmClienteApi.Controllers
     [RoutePrefix("api")]
     public class CarrinhoController : ApiController
     {
-        //caminho inicial da api
-        string UrlApi = "http://hml.ezitus.com/matriz/";
 
-         //aqui a api recebe um array de dados
-          //  {
-          //  "numeroCarrinho":122865,
-          //  "itens":[
-          //      {"codigo":"PA00058","qtd":1},
-          //      {"codigo":"MA00068","qtd":1},
-          //      {"codigo":"PA00004","qtd":1},
-          //      {"codigo":"PA00009","qtd":1}
-          //  ],
-          //  "cep":"08914444",
-          //  "retiradaNoLocal":false
-          //}
-    
+
+        //aqui a api recebe um array de dados
+        //  {
+        //  "numeroCarrinho":122865,
+        //  "itens":[
+        //      {"codigo":"PA00058","qtd":1},
+        //      {"codigo":"MA00068","qtd":1},
+        //      {"codigo":"PA00004","qtd":1},
+        //      {"codigo":"PA00009","qtd":1}
+        //  ],
+        //  "cep":"08914444",
+        //  "retiradaNoLocal":false
+        //}
+
         //http://localhost:49764/api/unidade/carrinho/consultaUnidadeAtendimento
+        ///apigestorfranquia.multiplick.com
         [HttpPost]
         [Route("unidade/carrinho/ConsultaUnidadeAtendimento")]
         public HttpResponseMessage ConsultaUnidadeAtendimento(TB_DADOS_API consultaAtendimento)
@@ -63,19 +63,17 @@ namespace CdmClienteApi.Controllers
             string token = "";
             string pedido = "";
             var tabela = new GravaPedidoAplicacao();
-
+     
             try
             {
                 if (status == "ABERTO")
                 {
-                    //consulta o usuario e pega o token
-                     string teste = UrlApi + "services/auth/login";
 
-                     token =  tabela.ConsultaUsuario(UrlApi+"services/auth/login");
-                    //consulta o pedido e grava no banco 
-                     pedido = tabela.ConsultaPedido(UrlApi+"services/pedidos/porNumero", idpedido, token);
+                    token = tabela.ConsultaUsuario("http://hml.ezitus.com/matriz/services/auth/login");
+                    pedido = tabela.ConsultaPedido("http://hml.ezitus.com/matriz/services/pedidos/porNumero", idpedido, token);
+
                     //abre o pedido, deixando disponivel para a unidade
-                     var tTabela = new ConsultaUnidadeEstoque();
+                    var tTabela = new ConsultaUnidadeEstoque();
                          tTabela.AbrePedido(idpedido);
                 }
 
