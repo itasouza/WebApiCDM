@@ -28,3 +28,18 @@ E:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Aplicacao\bi
 E:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Aplicacao\obj\Debug\Generico.Aplicacao.csprojResolveAssemblyReference.cache
 E:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Aplicacao\obj\Debug\Generico.Aplicacao.dll
 E:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Aplicacao\obj\Debug\Generico.Aplicacao.pdb
+E:\CdmClienteApi\Generico.Aplicacao\bin\Debug\Generico.Aplicacao.dll
+E:\CdmClienteApi\Generico.Aplicacao\bin\Debug\Generico.Aplicacao.pdb
+E:\CdmClienteApi\Generico.Aplicacao\bin\Debug\Generico.Dominio.dll
+E:\CdmClienteApi\Generico.Aplicacao\bin\Debug\Generico.Repositorio.dll
+E:\CdmClienteApi\Generico.Aplicacao\bin\Debug\Newtonsoft.Json.dll
+E:\CdmClienteApi\Generico.Aplicacao\bin\Debug\Npgsql.dll
+E:\CdmClienteApi\Generico.Aplicacao\bin\Debug\System.Threading.Tasks.Extensions.dll
+E:\CdmClienteApi\Generico.Aplicacao\bin\Debug\Generico.Dominio.pdb
+E:\CdmClienteApi\Generico.Aplicacao\bin\Debug\Generico.Repositorio.pdb
+E:\CdmClienteApi\Generico.Aplicacao\bin\Debug\Newtonsoft.Json.xml
+E:\CdmClienteApi\Generico.Aplicacao\bin\Debug\Npgsql.xml
+E:\CdmClienteApi\Generico.Aplicacao\bin\Debug\System.Threading.Tasks.Extensions.xml
+E:\CdmClienteApi\Generico.Aplicacao\obj\Debug\Generico.Aplicacao.csprojResolveAssemblyReference.cache
+E:\CdmClienteApi\Generico.Aplicacao\obj\Debug\Generico.Aplicacao.dll
+E:\CdmClienteApi\Generico.Aplicacao\obj\Debug\Generico.Aplicacao.pdb

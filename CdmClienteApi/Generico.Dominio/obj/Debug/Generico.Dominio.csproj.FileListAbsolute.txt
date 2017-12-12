@@ -12,3 +12,10 @@ E:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Dominio\bin\
 E:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Dominio\obj\Debug\Generico.Dominio.csprojResolveAssemblyReference.cache
 E:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Dominio\obj\Debug\Generico.Dominio.dll
 E:\A - ProjetoEstoqueCDM\WebApiCDM\WebApiCDM\CdmClienteApi\Generico.Dominio\obj\Debug\Generico.Dominio.pdb
+E:\CdmClienteApi\Generico.Dominio\bin\Debug\Generico.Dominio.dll
+E:\CdmClienteApi\Generico.Dominio\bin\Debug\Generico.Dominio.pdb
+E:\CdmClienteApi\Generico.Dominio\bin\Debug\Newtonsoft.Json.dll
+E:\CdmClienteApi\Generico.Dominio\bin\Debug\Newtonsoft.Json.xml
+E:\CdmClienteApi\Generico.Dominio\obj\Debug\Generico.Dominio.csprojResolveAssemblyReference.cache
+E:\CdmClienteApi\Generico.Dominio\obj\Debug\Generico.Dominio.dll
+E:\CdmClienteApi\Generico.Dominio\obj\Debug\Generico.Dominio.pdb

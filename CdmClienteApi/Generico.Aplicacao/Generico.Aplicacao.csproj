@@ -53,7 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsultaUnidadeEstoque.cs" />
+    <Compile Include="Properties\ConsultaUnidadeEstoque.cs" />
     <Compile Include="GravaPedidoAplicacao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

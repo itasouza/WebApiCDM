@@ -69,12 +69,26 @@ namespace Generico.Aplicacao
                 string json = streamReader.ReadToEnd();
 
                 Pedido p = JsonConvert.DeserializeObject<Pedido>(json);
-                string pedido = p.answer.numeroPedido;
+                string npedido            = p.answer.numeroPedido;
+                string tipoPedido         = p.answer.tipoPedido;
+                string dtPedido           = p.answer.dtPedido;
+                string dtVencimento       = p.answer.dtVencimento;
+                string idCdm              = p.answer.idCdm;
+                string status             = p.answer.status;
+                string idEnvioUnidade     = p.answer.idEnvioUnidade;
+                string idFormaEntrega     = p.answer.idFormaEntrega;
+                string nomeEntrega        = p.answer.nomeEntrega;
+                string ordemColetaEntrega = p.answer.ordemColetaEntrega;
+                string rgEntrega          = p.answer.rgEntrega;
+                string notaFiscal         = p.answer.notaFiscal;
 
-               string CodigoCadastro =  GravaCadastro(p.answer.cliente.cadastro);
-               string CodigoCliente  =  GravaCliente(p.answer.cliente, CodigoCadastro);
-             //  string CodigoCabecahoPedido = GravaCabecalhoPedido(p, CodigoCliente);
 
+
+
+                // string CodigoCadastro = GravaCadastro(p.answer.cliente.cadastro);
+                string CodigoCliente = "22951";  //GravaCliente(p.answer.cliente, CodigoCadastro);
+                string CodigoCabecahoPedido = GravaCabecalhoPedido(tipoPedido , dtPedido, CodigoCliente);
+                
                 return json;
             }
         }
@@ -221,12 +235,13 @@ namespace Generico.Aplicacao
         public string GravaCadastro(Cadastro cadastro)
         {
             int retorno = 0;
-            var strQuery = new StringBuilder();
-            string cidade = ConsultaCidade(cadastro.cidade.codigo);
+           // var strQuery = new StringBuilder();
+            var strQuery        = "";
+            string cidade       = ConsultaCidade(cadastro.cidade.codigo);
             string patrocinador = ConsultaPatrocinador(cadastro.patrocinador);
 
             //verificar se o cadastro existe
-            strQuery.Append("select * from cadastro WHERE id_cadastro = ").Append(cadastro.idCadastro);
+            strQuery = string.Format("select * from cadastro WHERE num_documento = '{0}' LIMIT 1", cadastro.numDocumento.ToString());
 
             using (contexto = new Contexto())
             {
@@ -239,73 +254,150 @@ namespace Generico.Aplicacao
                 reader.Close();
             }
 
+
             if (retorno == 0)
             {
+
                 //inserir um novo cadastro
-                strQuery.Clear();
-                strQuery.Append("INSERT INTO cadastro (id_patrocinador,confirmado,primeiro_nome,sobrenome,")
-                        .Append("email,login,senha,dt_nascimento,tipo_documento,num_documento, genero,ddd,telefone,endereco,complemento,numero,bairro,cep,")
-                        .Append("cidade, tipo_pessoa,dt_cadastro,cnae,ie,im,docs_verificados,apto_para_saque, docs_submetidos) ")
-                        .Append("VALUES (")
-                        .Append(cadastro.patrocinador).Append(",")
-                        .Append(cadastro.confirmado).Append(",")
-                        .Append("'").Append(cadastro.primeiroNome).Append("',")
-                        .Append("'").Append(cadastro.sobrenome).Append("',")
-                        .Append("'").Append(cadastro.email).Append("',")
-                        .Append("'").Append(cadastro.login).Append("',")
-                        .Append("'123',")
-                        .Append("'").Append(cadastro.dtNascimento.ToString("yyyy-dd-mm hh:mm:ss")).Append("',")
-                        .Append("'").Append(cadastro.tipoDocumento).Append("',")
-                        .Append("'").Append(cadastro.numDocumento).Append("',")
-                        .Append("'").Append(cadastro.genero).Append("',")
-                        .Append("'").Append(cadastro.ddd).Append("',")
-                        .Append("'").Append(cadastro.telefone).Append("',")
-                        .Append("'").Append(cadastro.endereco).Append("',")
-                        .Append("'").Append(cadastro.complemento).Append("',")
-                        .Append("'").Append(cadastro.numero).Append("',")
-                        .Append("'").Append(cadastro.bairro).Append("',")
-                        .Append("'").Append(cadastro.cep).Append("',")
-                        .Append("'").Append(cidade).Append("',") //cidade   //preciso gravar a cidade antes
-                        .Append("'").Append(cadastro.tipoPessoa).Append("',") //tipo de pessoa
-                        .Append("'").Append(DateTime.Parse(cadastro.dtCadastro.Replace("-", "/")).ToString("yyyy-dd-mm hh:mm:ss")).Append("',")
-                        .Append("'").Append(cadastro.cnae).Append("',")
-                        .Append("'").Append(cadastro.ie).Append("',")
-                        .Append("'").Append(cadastro.im).Append("',")
-                        .Append("true,")
-                        .Append("true,")
-                        .Append("true)")
-                        .Append("; select * from cadastro order by id_cadastro desc LIMIT 1  ");
+                strQuery = "";
+                strQuery += " INSERT INTO cadastro (id_patrocinador,confirmado,primeiro_nome,sobrenome, ";
+                strQuery += " email,login,senha,dt_nascimento,tipo_documento,num_documento, genero,ddd,telefone,endereco,complemento,numero,bairro,cep, ";
+                strQuery += " cidade, tipo_pessoa,dt_cadastro,cnae,ie,im,docs_verificados,apto_para_saque, docs_submetidos,categoria_cadastro)";
+                strQuery += " VALUES ( ";
+                strQuery += string.Format(" '{0}', ", patrocinador);
+                strQuery += string.Format(" '{0}', ",  cadastro.confirmado);
+                strQuery += string.Format(" '{0}',  ", cadastro.primeiroNome);
+                strQuery += string.Format(" '{0}',  ", cadastro.sobrenome);
+                strQuery += string.Format(" '{0}',  ", cadastro.email);
+                strQuery += string.Format(" '{0}',  ", cadastro.login);
+                strQuery += string.Format(" '{0}',  ", "123");
+                strQuery += string.Format(" '{0}',  ", cadastro.dtNascimento.ToString("MM-dd-yyyy"));
+                strQuery += string.Format(" '{0}',  ", cadastro.tipoDocumento);
+                strQuery += string.Format(" '{0}',  ", cadastro.numDocumento);
+                strQuery += string.Format(" '{0}',  ", cadastro.ddd);
+                strQuery += string.Format(" '{0}',  ", cadastro.genero);
+                strQuery += string.Format(" '{0}',  ", cadastro.telefone);
+                strQuery += string.Format(" '{0}',  ", cadastro.endereco);
+                strQuery += string.Format(" '{0}',  ", cadastro.complemento);
+                strQuery += string.Format(" '{0}',  ", cadastro.numero);
+                strQuery += string.Format(" '{0}',  ", cadastro.bairro);
+                strQuery += string.Format(" '{0}',  ", cadastro.cep);
+                strQuery += string.Format(" '{0}',  ", cidade);
+                strQuery += string.Format(" '{0}',  ", cadastro.tipoPessoa);
+                strQuery += string.Format(" '{0}',  ", DateTime.Now.ToString("MM-dd-yyy"));
+                strQuery += string.Format(" '{0}',  ", cadastro.cnae);
+                strQuery += string.Format(" '{0}',  ", cadastro.ie);
+                strQuery += string.Format(" '{0}',  ", cadastro.im);
+                strQuery += string.Format(" '{0}',  ", "true");
+                strQuery += string.Format(" '{0}',  ", "true");
+                strQuery += string.Format(" '{0}',  ", "true");
+                strQuery += string.Format(" '{0}'  ", "NA");
+                strQuery += string.Format(" ) ");
+                strQuery += string.Format("; select * from cadastro where num_documento = '{0}' LIMIT 1", cadastro.numDocumento);
+
+
+                //strQuery.Clear();
+                //strQuery.Append("INSERT INTO cadastro (id_patrocinador,confirmado,primeiro_nome,sobrenome,")
+                //        .Append("email,login,senha,dt_nascimento,tipo_documento,num_documento, genero,ddd,telefone,endereco,complemento,numero,bairro,cep,")
+                //        .Append("cidade, tipo_pessoa,dt_cadastro,cnae,ie,im,docs_verificados,apto_para_saque, docs_submetidos) ")
+                //        .Append("VALUES (")
+                //        .Append(cadastro.patrocinador).Append(",")
+                //        .Append(cadastro.confirmado).Append(",")
+                //        .Append("'").Append(cadastro.primeiroNome).Append("',")
+                //        .Append("'").Append(cadastro.sobrenome).Append("',")
+                //        .Append("'").Append(cadastro.email).Append("',")
+                //        .Append("'").Append(cadastro.login).Append("',")
+                //        .Append("'123',")
+                //        .Append("'").Append(cadastro.dtNascimento.ToString("yyyy-dd-mm hh:mm:ss")).Append("',")
+                //        .Append("'").Append(cadastro.tipoDocumento).Append("',")
+                //        .Append("'").Append(cadastro.numDocumento).Append("',")
+                //        .Append("'").Append(cadastro.genero).Append("',")
+                //        .Append("'").Append(cadastro.ddd).Append("',")
+                //        .Append("'").Append(cadastro.telefone).Append("',")
+                //        .Append("'").Append(cadastro.endereco).Append("',")
+                //        .Append("'").Append(cadastro.complemento).Append("',")
+                //        .Append("'").Append(cadastro.numero).Append("',")
+                //        .Append("'").Append(cadastro.bairro).Append("',")
+                //        .Append("'").Append(cadastro.cep).Append("',")
+                //        .Append("'").Append(cidade).Append("',") //cidade   //preciso gravar a cidade antes
+                //        .Append("'").Append(cadastro.tipoPessoa).Append("',") //tipo de pessoa
+                //        .Append("'").Append(DateTime.Parse(cadastro.dtCadastro.Replace("-", "/")).ToString("yyyy-dd-mm hh:mm:ss")).Append("',")
+                //        .Append("'").Append(cadastro.cnae).Append("',")
+                //        .Append("'").Append(cadastro.ie).Append("',")
+                //        .Append("'").Append(cadastro.im).Append("',")
+                //        .Append("true,")
+                //        .Append("true,")
+                //        .Append("true)")
+                //        .Append("; select * from cadastro order by id_cadastro desc LIMIT 1  ");
+
 
             }
             else
             {
+
+
+                strQuery = "";
+                strQuery += " UPDATE cadastro SET ";
+                strQuery += string.Format(" id_patrocinador  = '{0}',  ", patrocinador);
+                strQuery += string.Format(" confirmado       = '{0}',  ", cadastro.confirmado);
+                strQuery += string.Format(" primeiro_nome    = '{0}',  ", cadastro.primeiroNome);
+                strQuery += string.Format(" sobrenome        = '{0}',  ", cadastro.sobrenome);
+                strQuery += string.Format(" email            = '{0}',  ", cadastro.email);
+                //strQuery += string.Format(" login            = '{0}',  ", cadastro.login);
+                strQuery += string.Format(" senha            = '{0}',  ", "123");
+                strQuery += string.Format(" dt_nascimento    = '{0}',  ", cadastro.dtNascimento.ToString("MM-dd-yyyy"));
+               // strQuery += string.Format(" tipo_documento   = '{0}',  ", cadastro.tipoDocumento);
+               // strQuery += string.Format(" num_documento    = '{0}',  ", cadastro.numDocumento);
+                strQuery += string.Format(" genero           = '{0}',  ", cadastro.genero);
+                strQuery += string.Format(" ddd              = '{0}',  ", cadastro.ddd);
+                strQuery += string.Format(" telefone         = '{0}',  ", cadastro.telefone);
+                strQuery += string.Format(" endereco         = '{0}',  ", cadastro.endereco);
+                strQuery += string.Format(" complemento      = '{0}',  ", cadastro.complemento);
+                strQuery += string.Format(" numero           = '{0}',  ", cadastro.numero);
+                strQuery += string.Format(" bairro           = '{0}',  ", cadastro.bairro);
+                strQuery += string.Format(" cep              = '{0}',  ", cadastro.cep);
+                strQuery += string.Format(" cidade           = '{0}',  ", cidade);
+                strQuery += string.Format(" tipo_pessoa      = '{0}',  ", cadastro.tipoPessoa);
+                strQuery += string.Format(" dt_cadastro      = '{0}',  ", DateTime.Now.ToString("MM-dd-yyy"));
+                strQuery += string.Format(" cnae             = '{0}',  ", cadastro.cnae);
+                strQuery += string.Format(" ie               = '{0}',  ", cadastro.ie);
+                strQuery += string.Format(" im               = '{0}',  ", cadastro.im);
+                strQuery += string.Format(" docs_verificados = '{0}',  ", "true");
+                strQuery += string.Format(" apto_para_saque  = '{0}',  ", "true");
+                strQuery += string.Format(" docs_submetidos    = '{0}',  ", "true");
+                strQuery += string.Format(" categoria_cadastro = '{0}'  ", "NA");
+                strQuery += string.Format("; select * from cadastro where num_documento = '{0}' LIMIT 1", cadastro.numDocumento);
+
+     
+
+
                 //OK
-                strQuery.Clear();
-                strQuery.Append("UPDATE cadastro SET ")
-                        .Append("id_patrocinador = '").Append(patrocinador).Append("',")
-                        .Append("confirmado = ").Append(cadastro.confirmado).Append(",")
-                        .Append("primeiro_nome = '").Append(cadastro.primeiroNome).Append("',")
-                        .Append("sobrenome = '").Append(cadastro.sobrenome).Append("',")
-                        .Append("email = '").Append(cadastro.email).Append("',")
-                        .Append("login = '").Append(cadastro.login).Append("',")
-                        .Append("dt_nascimento = '").Append(cadastro.dtNascimento).Append("',")
-                        // .Append("tipo_documento = '").Append(cadastro.tipoDocumento).Append("',") //nao deixou atualizar o cpf 
-                        // .Append("num_documento = '").Append(cadastro.numDocumento).Append("',") //nao deixou atualizar o cpf 
-                        .Append("genero = '").Append(cadastro.genero).Append("',")
-                        .Append("ddd = '").Append(cadastro.ddd).Append("',")
-                        .Append("telefone = '").Append(cadastro.telefone).Append("',")
-                        .Append("endereco = '").Append(cadastro.endereco).Append("',")
-                        .Append("complemento = '").Append(cadastro.complemento).Append("',")
-                        .Append("numero = '").Append(cadastro.numero).Append("',")
-                        .Append("bairro = '").Append(cadastro.bairro).Append("',")
-                        .Append("cep = '").Append(cadastro.cep).Append("',")
-                        .Append("cidade = '").Append(cidade).Append("',") //cidade   //preciso gravar a cidade antes 
-                        .Append("tipo_pessoa = '").Append(cadastro.tipoPessoa).Append("',")//tipo de pessoa                                        
-                        .Append("agencia = '").Append("").Append("',") //agencia                
-                        .Append("cnae = '").Append(cadastro.cnae).Append("',")
-                        .Append("ie = '").Append(cadastro.ie).Append("',")
-                        .Append("im = '").Append(cadastro.im).Append("'")
-                        .Append(" WHERE id_cadastro = ").Append(cadastro.idCadastro);
+                //strQuery.Clear();
+                //strQuery.Append("UPDATE cadastro SET ")
+                //        .Append("id_patrocinador = '").Append(patrocinador).Append("',")
+                //        .Append("confirmado = ").Append(cadastro.confirmado).Append(",")
+                //        .Append("primeiro_nome = '").Append(cadastro.primeiroNome).Append("',")
+                //        .Append("sobrenome = '").Append(cadastro.sobrenome).Append("',")
+                //        .Append("email = '").Append(cadastro.email).Append("',")
+                //        .Append("login = '").Append(cadastro.login).Append("',")
+                //        .Append("dt_nascimento = '").Append(cadastro.dtNascimento).Append("',")
+                //        // .Append("tipo_documento = '").Append(cadastro.tipoDocumento).Append("',") //nao deixou atualizar o cpf 
+                //        // .Append("num_documento = '").Append(cadastro.numDocumento).Append("',") //nao deixou atualizar o cpf 
+                //        .Append("genero = '").Append(cadastro.genero).Append("',")
+                //        .Append("ddd = '").Append(cadastro.ddd).Append("',")
+                //        .Append("telefone = '").Append(cadastro.telefone).Append("',")
+                //        .Append("endereco = '").Append(cadastro.endereco).Append("',")
+                //        .Append("complemento = '").Append(cadastro.complemento).Append("',")
+                //        .Append("numero = '").Append(cadastro.numero).Append("',")
+                //        .Append("bairro = '").Append(cadastro.bairro).Append("',")
+                //        .Append("cep = '").Append(cadastro.cep).Append("',")
+                //        .Append("cidade = '").Append(cidade).Append("',") //cidade   //preciso gravar a cidade antes 
+                //        .Append("tipo_pessoa = '").Append(cadastro.tipoPessoa).Append("',")//tipo de pessoa                                        
+                //        .Append("agencia = '").Append("").Append("',") //agencia                
+                //        .Append("cnae = '").Append(cadastro.cnae).Append("',")
+                //        .Append("ie = '").Append(cadastro.ie).Append("',")
+                //        .Append("im = '").Append(cadastro.im).Append("'")
+                //        .Append(" WHERE id_cadastro = ").Append(cadastro.idCadastro);
 
             }
 
@@ -328,12 +420,14 @@ namespace Generico.Aplicacao
         public string GravaCliente(ClientePedido cliente,string CodigoCadastro)
         {
             int retorno = 0;
-            var strQuery = new StringBuilder();
+            // var strQuery = new StringBuilder();
+            var strQuery = "";
             string cadastro = CodigoCadastro;
+   
+            //verificar se o cadastro existe
+            strQuery = string.Format("select * from cliente WHERE num_documento = '{0}' LIMIT 1", cliente.numDocumento.ToString());
 
-            //verificar se o cliente existe
-            strQuery.Append("select * from cliente WHERE id_cliente = ").Append(cliente.idCliente);
-
+           
             using (contexto = new Contexto())
             {
                 var reader = contexto.ExecutaComandoComRetorno(strQuery.ToString());
@@ -345,54 +439,103 @@ namespace Generico.Aplicacao
                 reader.Close();
             }
 
+
             if (retorno == 0)
             {
                 //inserir um novo cliente
-                strQuery.Clear();
-                strQuery.Append("INSERT INTO cliente (id_cadastro,nome_cliente,tipo_documento,num_documento,")
-                        .Append("email,dt_nascimento,genero,ddd,telefone,endereco, numero,bairro,cep,cidade,tipo_endereco_entrega,orientacao_entregador, estado)")
-                        .Append(" VALUES (")
-                        .Append("'").Append(cliente.nomeCliente).Append("',")
-                        .Append("'").Append(cliente.tipoDocumento).Append("',")
-                        .Append("'").Append(cliente.numDocumento).Append("',")
-                        .Append("'").Append(cliente.email).Append("',")
-                        .Append("'").Append(DateTime.Parse(cliente.dtNascimento.Replace("-", "/")).ToString("yyyy-MM-dd")).Append("',")
-                        .Append("'").Append(cliente.genero).Append("',")
-                        .Append("'").Append(cliente.ddd).Append("',")
-                        .Append("'").Append(cliente.telefone).Append("',")
-                        .Append("'").Append(cliente.endereco).Append("',")
-                        .Append("'").Append(cliente.numero).Append("',")
-                        .Append("'").Append(cliente.bairro).Append("',")
-                        .Append("'").Append(cliente.cep).Append("',")
-                        .Append("'").Append(cliente.cidade.codigo).Append("',") //precisa gravar a cidade antes
-                        .Append("'").Append(cliente.tipoEnderecoEntrega).Append("',")
-                        .Append("'").Append(cliente.orientacaoEntregador).Append("',")
-                        .Append("'").Append(cliente.cidade.estado).Append("'")
-                        .Append(" ) ")
-                        .Append("; select  * from cliente order by id_cliente desc LIMIT 1  ");
+                strQuery = "";
+                strQuery += " INSERT INTO cliente (id_cadastro,nome_cliente,tipo_documento,num_documento,";
+                strQuery += " email,dt_nascimento,genero,ddd,telefone,endereco, numero,bairro,cep,cidade,tipo_endereco_entrega,orientacao_entregador, estado)";
+                strQuery += " VALUES ( ";
+                strQuery += string.Format(" '{0}', ", cadastro);
+                strQuery += string.Format(" '{0}', ", cliente.nomeCliente);
+                strQuery += string.Format(" '{0}',  ", cliente.tipoDocumento);
+                strQuery += string.Format(" '{0}',  ", cliente.numDocumento);
+                strQuery += string.Format(" '{0}',  ", cliente.email);
+                strQuery += string.Format(" '{0}',  ", DateTime.Now.ToString("MM-dd-yyy"));
+                strQuery += string.Format(" '{0}',  ", cliente.genero);
+                strQuery += string.Format(" '{0}',  ", cliente.ddd);
+                strQuery += string.Format(" '{0}',  ", cliente.telefone );
+                strQuery += string.Format(" '{0}',  ", cliente.endereco);
+                strQuery += string.Format(" '{0}',  ", cliente.numero);
+                strQuery += string.Format(" '{0}',  ", cliente.bairro);
+                strQuery += string.Format(" '{0}',  ", cliente.cep);
+                strQuery += string.Format(" '{0}',  ", cliente.cidade.codigo);
+                strQuery += string.Format(" '{0}',  ", cliente.tipoEnderecoEntrega);
+                strQuery += string.Format(" '{0}',  ", cliente.orientacaoEntregador);
+                strQuery += string.Format(" '{0}'   ", cliente.cidade.estado.sigla);
+                strQuery += string.Format(" ) ");
+                strQuery += string.Format("; select * from cliente where num_documento = '{0}' LIMIT 1", cliente.numDocumento);
+
+                //inserir um novo cliente
+                //strQuery.Clear();
+                //strQuery.Append("INSERT INTO cliente (id_cadastro,nome_cliente,tipo_documento,num_documento,")
+                //        .Append("email,dt_nascimento,genero,ddd,telefone,endereco, numero,bairro,cep,cidade,tipo_endereco_entrega,orientacao_entregador, estado)")
+                //        .Append(" VALUES (")
+                //        .Append("'").Append(cliente.nomeCliente).Append("',")
+                //        .Append("'").Append(cliente.tipoDocumento).Append("',")
+                //        .Append("'").Append(cliente.numDocumento).Append("',")
+                //        .Append("'").Append(cliente.email).Append("',")
+                //        .Append("'").Append(DateTime.Parse(cliente.dtNascimento.Replace("-", "/")).ToString("yyyy-MM-dd")).Append("',")
+                //        .Append("'").Append(cliente.genero).Append("',")
+                //        .Append("'").Append(cliente.ddd).Append("',")
+                //        .Append("'").Append(cliente.telefone).Append("',")
+                //        .Append("'").Append(cliente.endereco).Append("',")
+                //        .Append("'").Append(cliente.numero).Append("',")
+                //        .Append("'").Append(cliente.bairro).Append("',")
+                //        .Append("'").Append(cliente.cep).Append("',")
+                //        .Append("'").Append(cliente.cidade.codigo).Append("',") //precisa gravar a cidade antes
+                //        .Append("'").Append(cliente.tipoEnderecoEntrega).Append("',")
+                //        .Append("'").Append(cliente.orientacaoEntregador).Append("',")
+                //        .Append("'").Append(cliente.cidade.estado).Append("'")
+                //        .Append(" ) ")
+                //        .Append("; select  * from cliente order by id_cliente desc LIMIT 1  ");
             }
             else
             {
+
+                strQuery = "";
+                strQuery += " UPDATE cliente SET ";
+                strQuery += string.Format(" id_cadastro    = '{0}', ", cadastro);
+                strQuery += string.Format(" nome_cliente   = '{0}', ", cliente.nomeCliente);
+                strQuery += string.Format(" tipo_documento = '{0}',  ", cliente.tipoDocumento);
+                strQuery += string.Format(" num_documento  = '{0}',  ", cliente.numDocumento);
+                strQuery += string.Format(" email          = '{0}',  ", cliente.email);
+                strQuery += string.Format(" dt_nascimento  = '{0}',  ", DateTime.Now.ToString("MM-dd-yyy"));
+                strQuery += string.Format(" genero         = '{0}',  ", cliente.genero);
+                strQuery += string.Format(" ddd            = '{0}',  ", cliente.ddd);
+                strQuery += string.Format(" telefone       = '{0}',  ", cliente.telefone);
+                strQuery += string.Format(" endereco       = '{0}',  ", cliente.endereco);
+                strQuery += string.Format(" numero         = '{0}',  ", cliente.numero);
+                strQuery += string.Format(" bairro         = '{0}',  ", cliente.bairro);
+                strQuery += string.Format(" cep            = '{0}',  ", cliente.cep);
+                strQuery += string.Format(" cidade         = '{0}',  ", cliente.cidade.codigo);
+                strQuery += string.Format(" tipo_endereco_entrega =  '{0}',  ", cliente.tipoEnderecoEntrega);
+                strQuery += string.Format(" orientacao_entregador =  '{0}',  ", cliente.orientacaoEntregador);
+                strQuery += string.Format(" estado                =  '{0}'   ", cliente.cidade.estado.sigla);
+                strQuery += string.Format("; select * from cliente where num_documento = '{0}' LIMIT 1", cliente.numDocumento);
+
+
                 //atualiza o cliente
-                strQuery.Clear();
-                strQuery.Append("UPDATE cliente SET ")
-                        .Append("nome_cliente = '").Append(cliente.nomeCliente).Append("',")
-                        .Append("tipo_documento = '").Append(cliente.tipoDocumento).Append("',")
-                        .Append("num_documento = '").Append(cliente.numDocumento).Append("',")
-                        .Append("email = '").Append(cliente.email).Append("',")
-                        .Append("dt_nascimento = '").Append(DateTime.Parse(cliente.dtNascimento.Replace("-", "/")).ToString("yyyy-MM-dd")).Append("',")
-                        .Append("genero = '").Append(cliente.genero).Append("',")
-                        .Append("ddd = '").Append(cliente.ddd).Append("',")
-                        .Append("telefone = '").Append(cliente.telefone).Append("',")
-                        .Append("endereco = '").Append(cliente.endereco).Append("',")
-                        .Append("numero = '").Append(cliente.numero).Append("',")
-                        .Append("bairro = '").Append(cliente.bairro).Append("',")
-                        .Append("cep = '").Append(cliente.cep).Append("',")
-                        .Append("cidade = '").Append(cliente.cidade.codigo).Append("',") //precisa gravar a cidade antes                        
-                        .Append("tipo_endereco_entrega = '").Append(cliente.tipoEnderecoEntrega).Append("',")
-                        .Append("orientacao_entregador = '").Append(cliente.orientacaoEntregador).Append("',")
-                        .Append("estado = '").Append(cliente.cidade.estado.sigla).Append("' ")
-                        .Append("WHERE id_cliente = ").Append(cliente.idCliente);
+                //strQuery.Clear();
+                //strQuery.Append("UPDATE cliente SET ")
+                //        .Append("nome_cliente = '").Append(cliente.nomeCliente).Append("',")
+                //        .Append("tipo_documento = '").Append(cliente.tipoDocumento).Append("',")
+                //        .Append("num_documento = '").Append(cliente.numDocumento).Append("',")
+                //        .Append("email = '").Append(cliente.email).Append("',")
+                //        .Append("dt_nascimento = '").Append(DateTime.Parse(cliente.dtNascimento.Replace("-", "/")).ToString("yyyy-MM-dd")).Append("',")
+                //        .Append("genero = '").Append(cliente.genero).Append("',")
+                //        .Append("ddd = '").Append(cliente.ddd).Append("',")
+                //        .Append("telefone = '").Append(cliente.telefone).Append("',")
+                //        .Append("endereco = '").Append(cliente.endereco).Append("',")
+                //        .Append("numero = '").Append(cliente.numero).Append("',")
+                //        .Append("bairro = '").Append(cliente.bairro).Append("',")
+                //        .Append("cep = '").Append(cliente.cep).Append("',")
+                //        .Append("cidade = '").Append(cliente.cidade.codigo).Append("',") //precisa gravar a cidade antes                        
+                //        .Append("tipo_endereco_entrega = '").Append(cliente.tipoEnderecoEntrega).Append("',")
+                //        .Append("orientacao_entregador = '").Append(cliente.orientacaoEntregador).Append("',")
+                //        .Append("estado = '").Append(cliente.cidade.estado.sigla).Append("' ")
+                //        .Append("WHERE id_cliente = ").Append(cliente.idCliente);
             }
 
             using (contexto = new Contexto())
@@ -416,27 +559,41 @@ namespace Generico.Aplicacao
 
 
 
-        public string GravaCabecalhoPedido(CabPedido pedido, string CodigoCliente)
+        public string GravaCabecalhoPedido(string TipoPedido, string DtPedido, string IdCliente)
         {
+
             int retorno = 0;
-            var strQuery = new StringBuilder();
+            // var strQuery = new StringBuilder();
+            var strQuery = "";
+
+            strQuery = "";
+            strQuery += " INSERT INTO pedidos (id_tipo_pedido,dt_pedido,id_cliente";
+            strQuery += " VALUES ( ";
+            strQuery += string.Format(" '{0}', ", TipoPedido);
+            strQuery += string.Format(" '{0}',  ", DtPedido.ToString("MM-dd-yyyy"));
+            strQuery += string.Format(" '{0}'  ", IdCliente);
+            strQuery += string.Format(" ) ");
+            strQuery += string.Format("; select  * from pedidos where id_cliente = '{0}' order by dt_pedido desc LIMIT 1", IdCliente);
+
+
+            
 
             //inserir um novo cliente            
-            strQuery.Append("INSERT INTO pedidos (id_cliente,id_tipo_pedido,dt_pedido,dt_vencimento,id_cdm, status,idformaentrega,nome_entrega,ordem_coleta_entrega,")
-                    .Append("rg_Entrega)")
-                    .Append(" VALUES(")
-                    .Append("'").Append(CodigoCliente).Append("',") //id do cliente
-                    .Append(pedido.tipoPedido).Append(",")
-                    .Append("'").Append(DateTime.Parse(pedido.dtPedido.Replace("-", "/")).ToString("yyyy-MM-dd")).Append("',")
-                    .Append("'").Append(DateTime.Parse(pedido.dtVencimento.Replace("-", "/")).ToString("yyyy-MM-dd")).Append("',")
-                    .Append(pedido.idCdm).Append(",")
-                    .Append(pedido.status).Append(",")
-                    //.Append(pedido.idEnvioUnidade).Append(",") Nao tinha este campo no banco
-                    .Append(pedido.idFormaEntrega).Append(",")
-                    .Append("'").Append(pedido.nomeEntrega).Append("',")
-                    .Append("'").Append(pedido.ordemColetaEntrega).Append("',")
-                    .Append("'").Append(pedido.rgEntrega).Append("') ")
-                    .Append("; select numero_pedido from pedidos order by numero_pedido desc LIMIT 1  ");
+            //strQuery.Append("INSERT INTO pedidos (id_cliente,id_tipo_pedido,dt_pedido,dt_vencimento,id_cdm, status,idformaentrega,nome_entrega,ordem_coleta_entrega,")
+            //        .Append("rg_Entrega)")
+            //        .Append(" VALUES(")
+            //        .Append("'").Append(CodigoCliente).Append("',") //id do cliente
+            //        .Append(pedido.tipoPedido).Append(",")
+            //        .Append("'").Append(DateTime.Parse(pedido.dtPedido.Replace("-", "/")).ToString("yyyy-MM-dd")).Append("',")
+            //        .Append("'").Append(DateTime.Parse(pedido.dtVencimento.Replace("-", "/")).ToString("yyyy-MM-dd")).Append("',")
+            //        .Append(pedido.idCdm).Append(",")
+            //        .Append(pedido.status).Append(",")
+            //        //.Append(pedido.idEnvioUnidade).Append(",") Nao tinha este campo no banco
+            //        .Append(pedido.idFormaEntrega).Append(",")
+            //        .Append("'").Append(pedido.nomeEntrega).Append("',")
+            //        .Append("'").Append(pedido.ordemColetaEntrega).Append("',")
+            //        .Append("'").Append(pedido.rgEntrega).Append("') ")
+            //        .Append("; select numero_pedido from pedidos order by numero_pedido desc LIMIT 1  ");
 
             using (contexto = new Contexto())
             {

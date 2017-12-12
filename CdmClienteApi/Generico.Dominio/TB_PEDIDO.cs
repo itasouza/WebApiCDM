@@ -43,7 +43,19 @@ namespace Generico.Dominio
         public class AnswerPedido
         {
             public string numeroPedido { get; set; }
+            public string tipoPedido { get; set; }
+            public string dtPedido { get; set; }
+            public string dtVencimento { get; set; }
+            public string idCdm { get; set; }
+            public string status { get; set; }
+            public string idEnvioUnidade { get; set; }
+            public string idFormaEntrega { get; set; }
+            public string nomeEntrega { get; set; }
+            public string ordemColetaEntrega { get; set; }
+            public string rgEntrega { get; set; }
+            public string notaFiscal { get; set; }
             public ClientePedido cliente { get; set; }
+          
 
 
         }
