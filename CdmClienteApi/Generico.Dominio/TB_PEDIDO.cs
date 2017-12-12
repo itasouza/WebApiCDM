@@ -36,12 +36,16 @@ namespace Generico.Dominio
             public string errorMessage { get; set; }
 
             public AnswerPedido answer { get; set; }
+
+            
         }
 
         public class AnswerPedido
         {
             public string numeroPedido { get; set; }
             public ClientePedido cliente { get; set; }
+
+
         }
 
         public class ClientePedido
@@ -153,10 +157,10 @@ namespace Generico.Dominio
             public string ordemColetaEntrega { get; set; }
             public string rgEntrega { get; set; }
             public string notaFiscal { get; set; }
-            public Itens itens { get; set; }
+            public Item itens { get; set; }
         }
 
-        public class Itens
+        public class Item
         {
             public string idItemPedido { get; set; }
             public int item { get; set; }

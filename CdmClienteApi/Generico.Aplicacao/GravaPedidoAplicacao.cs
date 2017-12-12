@@ -71,7 +71,9 @@ namespace Generico.Aplicacao
                 Pedido p = JsonConvert.DeserializeObject<Pedido>(json);
                 string pedido = p.answer.numeroPedido;
 
-                GravaCliente(p.answer.cliente);
+               string CodigoCadastro =  GravaCadastro(p.answer.cliente.cadastro);
+               string CodigoCliente  =  GravaCliente(p.answer.cliente, CodigoCadastro);
+             //  string CodigoCabecahoPedido = GravaCabecalhoPedido(p, CodigoCliente);
 
                 return json;
             }
@@ -79,16 +81,7 @@ namespace Generico.Aplicacao
 
 
 
-        public void GravaPedido()
-        {
 
-            var strQuery = string.Format("");
-
-            using (contexto = new Contexto())
-            {
-                contexto.ExecutaComando(strQuery);
-            }
-        }
 
         public string ConsultaPais(string codigo)
         {
@@ -112,8 +105,6 @@ namespace Generico.Aplicacao
             return retorno.ToString();
         }
 
-
-
         public string ConsultaEstado(string sigla)
         {
             string retorno = "";
@@ -135,9 +126,6 @@ namespace Generico.Aplicacao
 
             return retorno.ToString();
         }
-
-
-
 
         public string ConsultaCidade(string codigo)
         {
@@ -161,8 +149,6 @@ namespace Generico.Aplicacao
             return retorno.ToString();
         }
 
-
-
         public string ConsultaCadastro(string codigo)
         {
             int retorno = 0;
@@ -185,52 +171,59 @@ namespace Generico.Aplicacao
             return retorno.ToString();
         }
 
-
-
-        public string GravaItensPedido(Itens itens)
+        public string ConsultaPatrocinador(string codigo)
         {
             int retorno = 0;
-            var strQuery = new StringBuilder();
-            int QtdRegistro = itens.item;
+            var strQuery = "";
 
-            for (int i = 0; i <= QtdRegistro; i++)
+            //verificar se o cadastro existe
+            strQuery = string.Format("select * from cadastro WHERE login = '{0}' ", codigo);
+
+            using (contexto = new Contexto())
             {
-                strQuery.Clear();
-                strQuery.Append("INSERT INTO itens_pedido (numero_pedido,item,id_plano,descricao_item,valor_unitario,qtde, valor_total,pontos,id_produto  ")
-                            .Append("VALUES (")
-                            .Append(itens.idItemPedido).Append(",")
-                            .Append(itens.item).Append(",")
-                            .Append("'").Append(itens.plano).Append("',")
-                            .Append("'").Append(itens.descricaoItem).Append("',")
-                            .Append("'").Append(itens.valorUnitario).Append("',")
-                            .Append("'").Append(itens.qtde).Append("',")
-                            .Append("'").Append(itens.valorTotal).Append("',")
-                            .Append("'").Append(itens.pontos).Append("',")
-                            .Append("'").Append(itens.produto.id).Append("',")
-                            .Append(")");
-
-                using (contexto = new Contexto())
+                var reader = contexto.ExecutaComandoComRetorno(strQuery);
+                while (reader.Read())
                 {
-                    var reader = contexto.ExecutaComandoComRetorno(strQuery.ToString());
-                    while (reader.Read())
-                    {
-                        //retornar o ID do cliente inserido
-                        retorno = Convert.ToInt32(reader["id_cadastro"]);
-                    }
-                    reader.Close();
+                    //pega o Id 
+                    retorno = Convert.ToInt32(reader["id_patrocinador"]);
                 }
+                reader.Close();
+            }
+
+            return retorno.ToString();
+
+        }
+
+        public string ConsultaProduto(string codigo)
+        {
+            int retorno = 0;
+            var strQuery = "";
+
+            //verificar se o cadastro existe
+            strQuery = string.Format("select * from produto WHERE codigo = '{0}' ", codigo);
+
+            using (contexto = new Contexto())
+            {
+                var reader = contexto.ExecutaComandoComRetorno(strQuery);
+                while (reader.Read())
+                {
+                    //pega o Id 
+                    retorno = Convert.ToInt32(reader["id"]);
+                }
+                reader.Close();
             }
 
             return retorno.ToString();
         }
 
-
+      
 
         public string GravaCadastro(Cadastro cadastro)
         {
             int retorno = 0;
             var strQuery = new StringBuilder();
             string cidade = ConsultaCidade(cadastro.cidade.codigo);
+            string patrocinador = ConsultaPatrocinador(cadastro.patrocinador);
 
             //verificar se o cadastro existe
             strQuery.Append("select * from cadastro WHERE id_cadastro = ").Append(cadastro.idCadastro);
@@ -286,18 +279,18 @@ namespace Generico.Aplicacao
             }
             else
             {
-
+                //OK
                 strQuery.Clear();
                 strQuery.Append("UPDATE cadastro SET ")
-                        .Append("id_patrocinador = ").Append(cadastro.patrocinador).Append(",")
+                        .Append("id_patrocinador = '").Append(patrocinador).Append("',")
                         .Append("confirmado = ").Append(cadastro.confirmado).Append(",")
                         .Append("primeiro_nome = '").Append(cadastro.primeiroNome).Append("',")
                         .Append("sobrenome = '").Append(cadastro.sobrenome).Append("',")
                         .Append("email = '").Append(cadastro.email).Append("',")
                         .Append("login = '").Append(cadastro.login).Append("',")
                         .Append("dt_nascimento = '").Append(cadastro.dtNascimento).Append("',")
-                        .Append("tipo_documento = '").Append(cadastro.tipoDocumento).Append("',")
-                        .Append("num_documento = '").Append(cadastro.numDocumento).Append("',")
+                        // .Append("tipo_documento = '").Append(cadastro.tipoDocumento).Append("',") //nao deixou atualizar o cpf 
+                        // .Append("num_documento = '").Append(cadastro.numDocumento).Append("',") //nao deixou atualizar o cpf 
                         .Append("genero = '").Append(cadastro.genero).Append("',")
                         .Append("ddd = '").Append(cadastro.ddd).Append("',")
                         .Append("telefone = '").Append(cadastro.telefone).Append("',")
@@ -311,8 +304,8 @@ namespace Generico.Aplicacao
                         .Append("agencia = '").Append("").Append("',") //agencia                
                         .Append("cnae = '").Append(cadastro.cnae).Append("',")
                         .Append("ie = '").Append(cadastro.ie).Append("',")
-                        .Append("im = '").Append(cadastro.im).Append("')")
-                        .Append("WHERE id_cadastro = ").Append(cadastro.idCadastro);
+                        .Append("im = '").Append(cadastro.im).Append("'")
+                        .Append(" WHERE id_cadastro = ").Append(cadastro.idCadastro);
 
             }
 
@@ -332,16 +325,11 @@ namespace Generico.Aplicacao
         }
 
 
-        public string GravaCliente(ClientePedido cliente)
+        public string GravaCliente(ClientePedido cliente,string CodigoCadastro)
         {
             int retorno = 0;
             var strQuery = new StringBuilder();
-            string cadastro = "78791";// ConsultaCadastro(cliente.cadastro.ToString());
-
-            if (cadastro == "0")
-            {
-                //temos que gravar o cadastro porque ele não existe
-            }
+            string cadastro = CodigoCadastro;
 
             //verificar se o cliente existe
             strQuery.Append("select * from cliente WHERE id_cliente = ").Append(cliente.idCliente);
@@ -424,5 +412,91 @@ namespace Generico.Aplicacao
 
         }
 
+
+
+
+
+        public string GravaCabecalhoPedido(CabPedido pedido, string CodigoCliente)
+        {
+            int retorno = 0;
+            var strQuery = new StringBuilder();
+
+            //inserir um novo cliente            
+            strQuery.Append("INSERT INTO pedidos (id_cliente,id_tipo_pedido,dt_pedido,dt_vencimento,id_cdm, status,idformaentrega,nome_entrega,ordem_coleta_entrega,")
+                    .Append("rg_Entrega)")
+                    .Append(" VALUES(")
+                    .Append("'").Append(CodigoCliente).Append("',") //id do cliente
+                    .Append(pedido.tipoPedido).Append(",")
+                    .Append("'").Append(DateTime.Parse(pedido.dtPedido.Replace("-", "/")).ToString("yyyy-MM-dd")).Append("',")
+                    .Append("'").Append(DateTime.Parse(pedido.dtVencimento.Replace("-", "/")).ToString("yyyy-MM-dd")).Append("',")
+                    .Append(pedido.idCdm).Append(",")
+                    .Append(pedido.status).Append(",")
+                    //.Append(pedido.idEnvioUnidade).Append(",") Nao tinha este campo no banco
+                    .Append(pedido.idFormaEntrega).Append(",")
+                    .Append("'").Append(pedido.nomeEntrega).Append("',")
+                    .Append("'").Append(pedido.ordemColetaEntrega).Append("',")
+                    .Append("'").Append(pedido.rgEntrega).Append("') ")
+                    .Append("; select numero_pedido from pedidos order by numero_pedido desc LIMIT 1  ");
+
+            using (contexto = new Contexto())
+            {
+                var reader = contexto.ExecutaComandoComRetorno(strQuery.ToString());
+                while (reader.Read())
+                {
+                    //retornar o ID do cliente inserido
+                    retorno = Convert.ToInt32(reader["numero_pedido"]);
+                }
+                reader.Close();
+            }
+
+            return retorno.ToString();
+        }
+
+
+        public string GravaItensPedido(List<Item> itens)
+        {
+            int retorno = 0;
+            var strQuery = new StringBuilder();
+
+
+            for (int i = 0; i < itens.Count; i++)
+            {
+
+                //consulta se o produto existe no cadastro
+                int IdProduto = Convert.ToInt32(ConsultaProduto(itens[i].produto.codigo));
+
+                if(IdProduto > 0)
+                {
+                    strQuery.Clear();
+                    strQuery.Append("INSERT INTO itens_pedido (numero_pedido,item,id_plano,descricao_item,valor_unitario,qtde, valor_total,pontos,id_produto)  ")
+                            .Append("VALUES (")
+                            .Append(itens[i].idItemPedido).Append(",")
+                            .Append(itens[i].item).Append(",")
+                            .Append(itens[i].plano).Append(",")
+                            .Append("'").Append(itens[i].descricaoItem).Append("',")
+                            .Append(itens[i].valorUnitario).Append(",")
+                            .Append(itens[i].qtde).Append(",")
+                            .Append(itens[i].valorTotal).Append(",")
+                            .Append(itens[i].pontos).Append(",")
+                            .Append(itens[i].produto.id).Append(")")
+                            .Append("; select id_item_pedido from itens_pedido order by id_item_pedido desc LIMIT 1");
+                }
+
+
+
+                using (contexto = new Contexto())
+                {
+                    var reader = contexto.ExecutaComandoComRetorno(strQuery.ToString());
+                    while (reader.Read())
+                    {
+                        //retornar o ID do cliente inserido
+                        retorno = Convert.ToInt32(reader["id_item_pedido"]);
+                    }
+                    reader.Close();
+                }
+            }
+
+            return retorno.ToString();
+        }
     }
 }
