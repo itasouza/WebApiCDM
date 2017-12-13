@@ -13,6 +13,7 @@ using System.Web.Script.Serialization;
 using System.Configuration;
 using static Generico.Dominio.TB_PEDIDO;
 using Generico.Repositorio;
+using System.Globalization;
 
 namespace Generico.Aplicacao
 {
@@ -69,6 +70,7 @@ namespace Generico.Aplicacao
                 string json = streamReader.ReadToEnd();
 
                 Pedido p = JsonConvert.DeserializeObject<Pedido>(json);
+    
                 string npedido            = p.answer.numeroPedido;
                 string tipoPedido         = p.answer.tipoPedido;
                 string dtPedido           = p.answer.dtPedido;
@@ -81,14 +83,50 @@ namespace Generico.Aplicacao
                 string ordemColetaEntrega = p.answer.ordemColetaEntrega;
                 string rgEntrega          = p.answer.rgEntrega;
                 string notaFiscal         = p.answer.notaFiscal;
+                string situacao           = p.answer.situacao;
+                decimal valorTotal        = p.answer.valorTotal;
+                string faixaDesconto      = p.answer.faixaDesconto;
+                string valorDesconto      = p.answer.valorDesconto;
+                decimal valorFinalPedido  = p.answer.valorFinalPedido;
+                string flgCobrarFrete     = p.answer.flgCobrarFrete;
+                decimal valorFrete        = p.answer.valorFrete;
+                string servicoEntrega     = p.answer.servicoEntrega;
+                string formaEntrega       = p.answer.formaEntrega;
 
 
+               string CodigoCadastro = GravaCadastro(p.answer.cliente.cadastro);
+               string CodigoCliente = GravaCliente(p.answer.cliente, CodigoCadastro);
 
 
-                // string CodigoCadastro = GravaCadastro(p.answer.cliente.cadastro);
-                string CodigoCliente = "22951";  //GravaCliente(p.answer.cliente, CodigoCadastro);
-                string CodigoCabecahoPedido = GravaCabecalhoPedido(tipoPedido , dtPedido, CodigoCliente);
-                
+                string CodigoCabecahoPedido = GravaCabecalhoPedido(
+                            p.answer.tipoPedido,
+                            p.answer.dtPedido,
+                            p.answer.dtVencimento,
+                            p.answer.idCdm,
+                            p.answer.status,
+                            p.answer.idEnvioUnidade,
+                            p.answer.idFormaEntrega,
+                            p.answer.nomeEntrega,
+                            p.answer.ordemColetaEntrega,
+                            p.answer.rgEntrega,
+                            p.answer.notaFiscal,
+                            p.answer.situacao,
+                            p.answer.valorTotal,
+                            p.answer.faixaDesconto,
+                            p.answer.valorDesconto,
+                            p.answer.valorFinalPedido,
+                            p.answer.flgCobrarFrete,
+                            p.answer.valorFrete,
+                            p.answer.servicoEntrega,
+                            p.answer.formaEntrega,
+                            CodigoCliente,
+                            p.answer.numeroPedido
+
+                     );
+
+                //dúvida
+                GravaItensPedido(CodigoCabecahoPedido);
+
                 return json;
             }
         }
@@ -235,7 +273,6 @@ namespace Generico.Aplicacao
         public string GravaCadastro(Cadastro cadastro)
         {
             int retorno = 0;
-           // var strQuery = new StringBuilder();
             var strQuery        = "";
             string cidade       = ConsultaCidade(cadastro.cidade.codigo);
             string patrocinador = ConsultaPatrocinador(cadastro.patrocinador);
@@ -296,45 +333,9 @@ namespace Generico.Aplicacao
                 strQuery += string.Format("; select * from cadastro where num_documento = '{0}' LIMIT 1", cadastro.numDocumento);
 
 
-                //strQuery.Clear();
-                //strQuery.Append("INSERT INTO cadastro (id_patrocinador,confirmado,primeiro_nome,sobrenome,")
-                //        .Append("email,login,senha,dt_nascimento,tipo_documento,num_documento, genero,ddd,telefone,endereco,complemento,numero,bairro,cep,")
-                //        .Append("cidade, tipo_pessoa,dt_cadastro,cnae,ie,im,docs_verificados,apto_para_saque, docs_submetidos) ")
-                //        .Append("VALUES (")
-                //        .Append(cadastro.patrocinador).Append(",")
-                //        .Append(cadastro.confirmado).Append(",")
-                //        .Append("'").Append(cadastro.primeiroNome).Append("',")
-                //        .Append("'").Append(cadastro.sobrenome).Append("',")
-                //        .Append("'").Append(cadastro.email).Append("',")
-                //        .Append("'").Append(cadastro.login).Append("',")
-                //        .Append("'123',")
-                //        .Append("'").Append(cadastro.dtNascimento.ToString("yyyy-dd-mm hh:mm:ss")).Append("',")
-                //        .Append("'").Append(cadastro.tipoDocumento).Append("',")
-                //        .Append("'").Append(cadastro.numDocumento).Append("',")
-                //        .Append("'").Append(cadastro.genero).Append("',")
-                //        .Append("'").Append(cadastro.ddd).Append("',")
-                //        .Append("'").Append(cadastro.telefone).Append("',")
-                //        .Append("'").Append(cadastro.endereco).Append("',")
-                //        .Append("'").Append(cadastro.complemento).Append("',")
-                //        .Append("'").Append(cadastro.numero).Append("',")
-                //        .Append("'").Append(cadastro.bairro).Append("',")
-                //        .Append("'").Append(cadastro.cep).Append("',")
-                //        .Append("'").Append(cidade).Append("',") //cidade   //preciso gravar a cidade antes
-                //        .Append("'").Append(cadastro.tipoPessoa).Append("',") //tipo de pessoa
-                //        .Append("'").Append(DateTime.Parse(cadastro.dtCadastro.Replace("-", "/")).ToString("yyyy-dd-mm hh:mm:ss")).Append("',")
-                //        .Append("'").Append(cadastro.cnae).Append("',")
-                //        .Append("'").Append(cadastro.ie).Append("',")
-                //        .Append("'").Append(cadastro.im).Append("',")
-                //        .Append("true,")
-                //        .Append("true,")
-                //        .Append("true)")
-                //        .Append("; select * from cadastro order by id_cadastro desc LIMIT 1  ");
-
-
             }
             else
             {
-
 
                 strQuery = "";
                 strQuery += " UPDATE cadastro SET ";
@@ -369,36 +370,6 @@ namespace Generico.Aplicacao
                 strQuery += string.Format("; select * from cadastro where num_documento = '{0}' LIMIT 1", cadastro.numDocumento);
 
      
-
-
-                //OK
-                //strQuery.Clear();
-                //strQuery.Append("UPDATE cadastro SET ")
-                //        .Append("id_patrocinador = '").Append(patrocinador).Append("',")
-                //        .Append("confirmado = ").Append(cadastro.confirmado).Append(",")
-                //        .Append("primeiro_nome = '").Append(cadastro.primeiroNome).Append("',")
-                //        .Append("sobrenome = '").Append(cadastro.sobrenome).Append("',")
-                //        .Append("email = '").Append(cadastro.email).Append("',")
-                //        .Append("login = '").Append(cadastro.login).Append("',")
-                //        .Append("dt_nascimento = '").Append(cadastro.dtNascimento).Append("',")
-                //        // .Append("tipo_documento = '").Append(cadastro.tipoDocumento).Append("',") //nao deixou atualizar o cpf 
-                //        // .Append("num_documento = '").Append(cadastro.numDocumento).Append("',") //nao deixou atualizar o cpf 
-                //        .Append("genero = '").Append(cadastro.genero).Append("',")
-                //        .Append("ddd = '").Append(cadastro.ddd).Append("',")
-                //        .Append("telefone = '").Append(cadastro.telefone).Append("',")
-                //        .Append("endereco = '").Append(cadastro.endereco).Append("',")
-                //        .Append("complemento = '").Append(cadastro.complemento).Append("',")
-                //        .Append("numero = '").Append(cadastro.numero).Append("',")
-                //        .Append("bairro = '").Append(cadastro.bairro).Append("',")
-                //        .Append("cep = '").Append(cadastro.cep).Append("',")
-                //        .Append("cidade = '").Append(cidade).Append("',") //cidade   //preciso gravar a cidade antes 
-                //        .Append("tipo_pessoa = '").Append(cadastro.tipoPessoa).Append("',")//tipo de pessoa                                        
-                //        .Append("agencia = '").Append("").Append("',") //agencia                
-                //        .Append("cnae = '").Append(cadastro.cnae).Append("',")
-                //        .Append("ie = '").Append(cadastro.ie).Append("',")
-                //        .Append("im = '").Append(cadastro.im).Append("'")
-                //        .Append(" WHERE id_cadastro = ").Append(cadastro.idCadastro);
-
             }
 
             //retornar o ID do cadastro
@@ -420,7 +391,6 @@ namespace Generico.Aplicacao
         public string GravaCliente(ClientePedido cliente,string CodigoCadastro)
         {
             int retorno = 0;
-            // var strQuery = new StringBuilder();
             var strQuery = "";
             string cadastro = CodigoCadastro;
    
@@ -466,31 +436,7 @@ namespace Generico.Aplicacao
                 strQuery += string.Format(" '{0}'   ", cliente.cidade.estado.sigla);
                 strQuery += string.Format(" ) ");
                 strQuery += string.Format("; select * from cliente where num_documento = '{0}' LIMIT 1", cliente.numDocumento);
-
-                //inserir um novo cliente
-                //strQuery.Clear();
-                //strQuery.Append("INSERT INTO cliente (id_cadastro,nome_cliente,tipo_documento,num_documento,")
-                //        .Append("email,dt_nascimento,genero,ddd,telefone,endereco, numero,bairro,cep,cidade,tipo_endereco_entrega,orientacao_entregador, estado)")
-                //        .Append(" VALUES (")
-                //        .Append("'").Append(cliente.nomeCliente).Append("',")
-                //        .Append("'").Append(cliente.tipoDocumento).Append("',")
-                //        .Append("'").Append(cliente.numDocumento).Append("',")
-                //        .Append("'").Append(cliente.email).Append("',")
-                //        .Append("'").Append(DateTime.Parse(cliente.dtNascimento.Replace("-", "/")).ToString("yyyy-MM-dd")).Append("',")
-                //        .Append("'").Append(cliente.genero).Append("',")
-                //        .Append("'").Append(cliente.ddd).Append("',")
-                //        .Append("'").Append(cliente.telefone).Append("',")
-                //        .Append("'").Append(cliente.endereco).Append("',")
-                //        .Append("'").Append(cliente.numero).Append("',")
-                //        .Append("'").Append(cliente.bairro).Append("',")
-                //        .Append("'").Append(cliente.cep).Append("',")
-                //        .Append("'").Append(cliente.cidade.codigo).Append("',") //precisa gravar a cidade antes
-                //        .Append("'").Append(cliente.tipoEnderecoEntrega).Append("',")
-                //        .Append("'").Append(cliente.orientacaoEntregador).Append("',")
-                //        .Append("'").Append(cliente.cidade.estado).Append("'")
-                //        .Append(" ) ")
-                //        .Append("; select  * from cliente order by id_cliente desc LIMIT 1  ");
-            }
+         }
             else
             {
 
@@ -514,29 +460,7 @@ namespace Generico.Aplicacao
                 strQuery += string.Format(" orientacao_entregador =  '{0}',  ", cliente.orientacaoEntregador);
                 strQuery += string.Format(" estado                =  '{0}'   ", cliente.cidade.estado.sigla);
                 strQuery += string.Format("; select * from cliente where num_documento = '{0}' LIMIT 1", cliente.numDocumento);
-
-
-                //atualiza o cliente
-                //strQuery.Clear();
-                //strQuery.Append("UPDATE cliente SET ")
-                //        .Append("nome_cliente = '").Append(cliente.nomeCliente).Append("',")
-                //        .Append("tipo_documento = '").Append(cliente.tipoDocumento).Append("',")
-                //        .Append("num_documento = '").Append(cliente.numDocumento).Append("',")
-                //        .Append("email = '").Append(cliente.email).Append("',")
-                //        .Append("dt_nascimento = '").Append(DateTime.Parse(cliente.dtNascimento.Replace("-", "/")).ToString("yyyy-MM-dd")).Append("',")
-                //        .Append("genero = '").Append(cliente.genero).Append("',")
-                //        .Append("ddd = '").Append(cliente.ddd).Append("',")
-                //        .Append("telefone = '").Append(cliente.telefone).Append("',")
-                //        .Append("endereco = '").Append(cliente.endereco).Append("',")
-                //        .Append("numero = '").Append(cliente.numero).Append("',")
-                //        .Append("bairro = '").Append(cliente.bairro).Append("',")
-                //        .Append("cep = '").Append(cliente.cep).Append("',")
-                //        .Append("cidade = '").Append(cliente.cidade.codigo).Append("',") //precisa gravar a cidade antes                        
-                //        .Append("tipo_endereco_entrega = '").Append(cliente.tipoEnderecoEntrega).Append("',")
-                //        .Append("orientacao_entregador = '").Append(cliente.orientacaoEntregador).Append("',")
-                //        .Append("estado = '").Append(cliente.cidade.estado.sigla).Append("' ")
-                //        .Append("WHERE id_cliente = ").Append(cliente.idCliente);
-            }
+       }
 
             using (contexto = new Contexto())
             {
@@ -558,42 +482,64 @@ namespace Generico.Aplicacao
 
 
 
-
-        public string GravaCabecalhoPedido(string TipoPedido, string DtPedido, string IdCliente)
+        public string GravaCabecalhoPedido(
+                string tipoPedido,
+                string dt_pedido,
+                string dt_vencimento,
+                string id_cdm,
+                string status,
+                string idEnvioUnidade,
+                string idFormaEntrega,
+                string nomeEntrega,
+                string ordemColetaEntrega,
+                string rgEntrega,
+                string notaFiscal,
+                string situacao,
+                decimal valor_total,
+                string faixa_desconto,
+                string valor_desconto,
+                decimal valor_final_pedido,
+                string flg_cobrar_frete,
+                decimal valor_frete,
+                string servico_entrega,
+                string forma_entrega,
+                string id_cliente,
+                string numero_pedido
+            )
         {
 
+            if(string.IsNullOrEmpty(faixa_desconto))
+            {
+                faixa_desconto = "0";
+            }
+
+            if (string.IsNullOrEmpty(valor_desconto))
+            {
+                valor_desconto = "0";
+            }
+
             int retorno = 0;
-            // var strQuery = new StringBuilder();
             var strQuery = "";
 
             strQuery = "";
-            strQuery += " INSERT INTO pedidos (id_tipo_pedido,dt_pedido,id_cliente";
+            strQuery += " INSERT INTO pedidos (id_tipo_pedido,dt_pedido,situacao,valor_total,faixa_desconto,valor_desconto,valor_final_pedido,flg_cobrar_frete,valor_frete,servico_entrega,forma_entrega,id_cliente,numero_pedido_ezitus)";                    
             strQuery += " VALUES ( ";
-            strQuery += string.Format(" '{0}', ", TipoPedido);
-            strQuery += string.Format(" '{0}',  ", DtPedido.ToString("MM-dd-yyyy"));
-            strQuery += string.Format(" '{0}'  ", IdCliente);
+            strQuery += string.Format(" '{0}', ", tipoPedido);
+            strQuery += string.Format(" '{0}', ", DateTime.Now.ToString("yyyy-MM-dd 23:59:00.000"));
+            strQuery += string.Format(" '{0}', ", situacao);
+            strQuery += string.Format(CultureInfo.InvariantCulture, " '{0:0.00}', ", valor_total);
+            strQuery += string.Format(CultureInfo.InvariantCulture, " '{0:0.00}', ", faixa_desconto);
+            strQuery += string.Format(CultureInfo.InvariantCulture, " '{0:0.00}', ", valor_desconto);
+            strQuery += string.Format(CultureInfo.InvariantCulture, " '{0:0.00}', ", valor_final_pedido);
+            strQuery += string.Format(" '{0}', ", flg_cobrar_frete);
+            strQuery += string.Format(CultureInfo.InvariantCulture, " '{0:0.00}', ", valor_frete);
+            strQuery += string.Format(" '{0}', ", servico_entrega);
+            strQuery += string.Format(" '{0}', ", forma_entrega);
+            strQuery += string.Format(" '{0}', ", id_cliente);
+            strQuery += string.Format(" '{0}' ", numero_pedido);
             strQuery += string.Format(" ) ");
-            strQuery += string.Format("; select  * from pedidos where id_cliente = '{0}' order by dt_pedido desc LIMIT 1", IdCliente);
+            strQuery += string.Format("; select  * from pedidos where numero_pedido_ezitus = '{0}' LIMIT 1", numero_pedido);
 
-
-            
-
-            //inserir um novo cliente            
-            //strQuery.Append("INSERT INTO pedidos (id_cliente,id_tipo_pedido,dt_pedido,dt_vencimento,id_cdm, status,idformaentrega,nome_entrega,ordem_coleta_entrega,")
-            //        .Append("rg_Entrega)")
-            //        .Append(" VALUES(")
-            //        .Append("'").Append(CodigoCliente).Append("',") //id do cliente
-            //        .Append(pedido.tipoPedido).Append(",")
-            //        .Append("'").Append(DateTime.Parse(pedido.dtPedido.Replace("-", "/")).ToString("yyyy-MM-dd")).Append("',")
-            //        .Append("'").Append(DateTime.Parse(pedido.dtVencimento.Replace("-", "/")).ToString("yyyy-MM-dd")).Append("',")
-            //        .Append(pedido.idCdm).Append(",")
-            //        .Append(pedido.status).Append(",")
-            //        //.Append(pedido.idEnvioUnidade).Append(",") Nao tinha este campo no banco
-            //        .Append(pedido.idFormaEntrega).Append(",")
-            //        .Append("'").Append(pedido.nomeEntrega).Append("',")
-            //        .Append("'").Append(pedido.ordemColetaEntrega).Append("',")
-            //        .Append("'").Append(pedido.rgEntrega).Append("') ")
-            //        .Append("; select numero_pedido from pedidos order by numero_pedido desc LIMIT 1  ");
 
             using (contexto = new Contexto())
             {
@@ -610,50 +556,57 @@ namespace Generico.Aplicacao
         }
 
 
-        public string GravaItensPedido(List<Item> itens)
+        public void GravaItensPedido(string CodigoCabecahoPedido)
         {
-            int retorno = 0;
-            var strQuery = new StringBuilder();
+
+            //var strQuery = "";
+            // foreach (Item itens in (List<Item>))
+            //{
+
+            //}
+
+          
+
+            //for (int i = 0; i < itens.Count; i++)
+            //{
+
+            //    // consulta se o produto existe no cadastro
+            //    int IdProduto = Convert.ToInt32(ConsultaProduto(itens[i].produto.codigo));
+
+            //    if (IdProduto > 0)
+            //    {
+            //        strQuery.Clear();
+            //        strQuery.Append("INSERT INTO itens_pedido (numero_pedido,item,id_plano,descricao_item,valor_unitario,qtde, valor_total,pontos,id_produto)  ")
+            //                .Append("VALUES (")
+            //                .Append(itens[i].idItemPedido).Append(",")
+            //                .Append(itens[i].item).Append(",")
+            //                .Append(itens[i].plano).Append(",")
+            //                .Append("'").Append(itens[i].descricaoItem).Append("',")
+            //                .Append(itens[i].valorUnitario).Append(",")
+            //                .Append(itens[i].qtde).Append(",")
+            //                .Append(itens[i].valorTotal).Append(",")
+            //                .Append(itens[i].pontos).Append(",")
+            //                .Append(itens[i].produto.id).Append(")")
+            //                .Append("; select id_item_pedido from itens_pedido order by id_item_pedido desc LIMIT 1");
+            //    }
 
 
-            for (int i = 0; i < itens.Count; i++)
-            {
 
-                //consulta se o produto existe no cadastro
-                int IdProduto = Convert.ToInt32(ConsultaProduto(itens[i].produto.codigo));
-
-                if(IdProduto > 0)
-                {
-                    strQuery.Clear();
-                    strQuery.Append("INSERT INTO itens_pedido (numero_pedido,item,id_plano,descricao_item,valor_unitario,qtde, valor_total,pontos,id_produto)  ")
-                            .Append("VALUES (")
-                            .Append(itens[i].idItemPedido).Append(",")
-                            .Append(itens[i].item).Append(",")
-                            .Append(itens[i].plano).Append(",")
-                            .Append("'").Append(itens[i].descricaoItem).Append("',")
-                            .Append(itens[i].valorUnitario).Append(",")
-                            .Append(itens[i].qtde).Append(",")
-                            .Append(itens[i].valorTotal).Append(",")
-                            .Append(itens[i].pontos).Append(",")
-                            .Append(itens[i].produto.id).Append(")")
-                            .Append("; select id_item_pedido from itens_pedido order by id_item_pedido desc LIMIT 1");
-                }
-
-
-
-                using (contexto = new Contexto())
-                {
-                    var reader = contexto.ExecutaComandoComRetorno(strQuery.ToString());
-                    while (reader.Read())
-                    {
-                        //retornar o ID do cliente inserido
-                        retorno = Convert.ToInt32(reader["id_item_pedido"]);
-                    }
-                    reader.Close();
-                }
-            }
-
-            return retorno.ToString();
+            //    using (contexto = new Contexto())
+            //    {
+            //        var reader = contexto.ExecutaComandoComRetorno(strQuery.ToString());
+            //        while (reader.Read())
+            //        {
+            //            //retornar o ID do cliente inserido
+            //            retorno = Convert.ToInt32(reader["id_item_pedido"]);
+            //        }
+            //        reader.Close();
+            //    }
+            //}
         }
+
     }
+
+
+
 }

@@ -37,7 +37,7 @@ namespace Generico.Dominio
 
             public AnswerPedido answer { get; set; }
 
-            
+
         }
 
         public class AnswerPedido
@@ -54,8 +54,17 @@ namespace Generico.Dominio
             public string ordemColetaEntrega { get; set; }
             public string rgEntrega { get; set; }
             public string notaFiscal { get; set; }
+            public string situacao { get; set; }
+            public decimal valorTotal { get; set; }
+            public string faixaDesconto { get; set; }
+            public string valorDesconto { get; set; }
+            public decimal valorFinalPedido { get; set; }
+            public string flgCobrarFrete { get; set; }
+            public decimal valorFrete { get; set; }
+            public string servicoEntrega { get; set; }
+            public string formaEntrega { get; set; }
+
             public ClientePedido cliente { get; set; }
-          
 
 
         }
@@ -79,6 +88,7 @@ namespace Generico.Dominio
             public string tipoEnderecoEntrega { get; set; }
             public string orientacaoEntregador { get; set; }
             public Cadastro cadastro { get; set; }
+           
         }
 
         public class Cidade
@@ -169,7 +179,7 @@ namespace Generico.Dominio
             public string ordemColetaEntrega { get; set; }
             public string rgEntrega { get; set; }
             public string notaFiscal { get; set; }
-            public Item itens { get; set; }
+            
         }
 
         public class Item
