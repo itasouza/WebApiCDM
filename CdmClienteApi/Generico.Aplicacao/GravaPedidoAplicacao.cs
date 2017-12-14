@@ -70,65 +70,63 @@ namespace Generico.Aplicacao
             {
                 string json = streamReader.ReadToEnd();
 
-               
+
                 Pedido p = JsonConvert.DeserializeObject<Pedido>(json);
-    
-                string npedido            = p.answer.numeroPedido;
-                string tipoPedido         = p.answer.tipoPedido;
-                string dtPedido           = p.answer.dtPedido;
-                string dtVencimento       = p.answer.dtVencimento;
-                string idCdm              = p.answer.idCdm;
-                string status             = p.answer.status;
-                string idEnvioUnidade     = p.answer.idEnvioUnidade;
-                string idFormaEntrega     = p.answer.idFormaEntrega;
-                string nomeEntrega        = p.answer.nomeEntrega;
+
+                string npedido = p.answer.numeroPedido;
+                string tipoPedido = p.answer.tipoPedido;
+                string dtPedido = p.answer.dtPedido;
+                string dtVencimento = p.answer.dtVencimento;
+                string idCdm = p.answer.idCdm;
+                string status = p.answer.status;
+                string idEnvioUnidade = p.answer.idEnvioUnidade;
+                string idFormaEntrega = p.answer.idFormaEntrega;
+                string nomeEntrega = p.answer.nomeEntrega;
                 string ordemColetaEntrega = p.answer.ordemColetaEntrega;
-                string rgEntrega          = p.answer.rgEntrega;
-                string notaFiscal         = p.answer.notaFiscal;
-                string situacao           = p.answer.situacao;
-                decimal valorTotal        = p.answer.valorTotal;
-                string faixaDesconto      = p.answer.faixaDesconto;
-                string valorDesconto      = p.answer.valorDesconto;
-                decimal valorFinalPedido  = p.answer.valorFinalPedido;
-                string flgCobrarFrete     = p.answer.flgCobrarFrete;
-                decimal valorFrete        = p.answer.valorFrete;
-                string servicoEntrega     = p.answer.servicoEntrega;
-                string formaEntrega       = p.answer.formaEntrega;
+                string rgEntrega = p.answer.rgEntrega;
+                string notaFiscal = p.answer.notaFiscal;
+                string situacao = p.answer.situacao;
+                decimal valorTotal = p.answer.valorTotal;
+                string faixaDesconto = p.answer.faixaDesconto;
+                string valorDesconto = p.answer.valorDesconto;
+                decimal valorFinalPedido = p.answer.valorFinalPedido;
+                string flgCobrarFrete = p.answer.flgCobrarFrete;
+                decimal valorFrete = p.answer.valorFrete;
+                string servicoEntrega = p.answer.servicoEntrega;
+                string formaEntrega = p.answer.formaEntrega;
 
 
                 string CodigoCadastro = GravaCadastro(p.answer.cliente.cadastro);
                 string CodigoCliente = GravaCliente(p.answer.cliente, CodigoCadastro);
 
 
-                // string CodigoCabecahoPedido = GravaCabecalhoPedido(
-                //             p.answer.tipoPedido,
-                //             p.answer.dtPedido,
-                //             p.answer.dtVencimento,
-                //             p.answer.idCdm,
-                //             p.answer.status,
-                //             p.answer.idEnvioUnidade,
-                //             p.answer.idFormaEntrega,
-                //             p.answer.nomeEntrega,
-                //             p.answer.ordemColetaEntrega,
-                //             p.answer.rgEntrega,
-                //             p.answer.notaFiscal,
-                //             p.answer.situacao,
-                //             p.answer.valorTotal,
-                //             p.answer.faixaDesconto,
-                //             p.answer.valorDesconto,
-                //             p.answer.valorFinalPedido,
-                //             p.answer.flgCobrarFrete,
-                //             p.answer.valorFrete,
-                //             p.answer.servicoEntrega,
-                //             p.answer.formaEntrega,
-                //             CodigoCliente,
-                //             p.answer.numeroPedido
+                string CodigoCabecahoPedido = GravaCabecalhoPedido(
+                            p.answer.tipoPedido,
+                            p.answer.dtPedido,
+                            p.answer.dtVencimento,
+                            p.answer.idCdm,
+                            p.answer.status,
+                            p.answer.idEnvioUnidade,
+                            p.answer.idFormaEntrega,
+                            p.answer.nomeEntrega,
+                            p.answer.ordemColetaEntrega,
+                            p.answer.rgEntrega,
+                            p.answer.notaFiscal,
+                            p.answer.situacao,
+                            p.answer.valorTotal,
+                            p.answer.faixaDesconto,
+                            p.answer.valorDesconto,
+                            p.answer.valorFinalPedido,
+                            p.answer.flgCobrarFrete,
+                            p.answer.valorFrete,
+                            p.answer.servicoEntrega,
+                            p.answer.formaEntrega,
+                            CodigoCliente,
+                            p.answer.numeroPedido
 
-                //      );
+                     );
 
-                //dúvida
-                string teste = "115873";
-                GravaItensPedido(teste);
+                  GravaItensPedido(CodigoCabecahoPedido, p.answer.itens);
 
                 return json;
             }
@@ -271,13 +269,13 @@ namespace Generico.Aplicacao
             return retorno.ToString();
         }
 
-      
+
 
         public string GravaCadastro(Cadastro cadastro)
         {
             int retorno = 0;
-            var strQuery        = "";
-            string cidade       = ConsultaCidade(cadastro.cidade.codigo);
+            var strQuery = "";
+            string cidade = ConsultaCidade(cadastro.cidade.codigo);
             string patrocinador = ConsultaPatrocinador(cadastro.patrocinador);
 
             //verificar se o cadastro existe
@@ -305,7 +303,7 @@ namespace Generico.Aplicacao
                 strQuery += " cidade, tipo_pessoa,dt_cadastro,cnae,ie,im,docs_verificados,apto_para_saque, docs_submetidos,categoria_cadastro)";
                 strQuery += " VALUES ( ";
                 strQuery += string.Format(" '{0}', ", patrocinador);
-                strQuery += string.Format(" '{0}', ",  cadastro.confirmado);
+                strQuery += string.Format(" '{0}', ", cadastro.confirmado);
                 strQuery += string.Format(" '{0}',  ", cadastro.primeiroNome);
                 strQuery += string.Format(" '{0}',  ", cadastro.sobrenome);
                 strQuery += string.Format(" '{0}',  ", cadastro.email);
@@ -350,8 +348,8 @@ namespace Generico.Aplicacao
                 //strQuery += string.Format(" login            = '{0}',  ", cadastro.login);
                 strQuery += string.Format(" senha            = '{0}',  ", "123");
                 strQuery += string.Format(" dt_nascimento    = '{0}',  ", cadastro.dtNascimento.ToString("MM-dd-yyyy"));
-               // strQuery += string.Format(" tipo_documento   = '{0}',  ", cadastro.tipoDocumento);
-               // strQuery += string.Format(" num_documento    = '{0}',  ", cadastro.numDocumento);
+                // strQuery += string.Format(" tipo_documento   = '{0}',  ", cadastro.tipoDocumento);
+                // strQuery += string.Format(" num_documento    = '{0}',  ", cadastro.numDocumento);
                 strQuery += string.Format(" genero           = '{0}',  ", cadastro.genero);
                 strQuery += string.Format(" ddd              = '{0}',  ", cadastro.ddd);
                 strQuery += string.Format(" telefone         = '{0}',  ", cadastro.telefone);
@@ -373,7 +371,7 @@ namespace Generico.Aplicacao
                 strQuery += string.Format(" where  num_documento = '{0}'  ", cadastro.numDocumento);
                 strQuery += string.Format("; select * from cadastro where num_documento = '{0}' LIMIT 1", cadastro.numDocumento);
 
-     
+
             }
 
             //retornar o ID do cadastro
@@ -392,16 +390,16 @@ namespace Generico.Aplicacao
         }
 
 
-        public string GravaCliente(ClientePedido cliente,string CodigoCadastro)
+        public string GravaCliente(ClientePedido cliente, string CodigoCadastro)
         {
             int retorno = 0;
             var strQuery = "";
             string cadastro = CodigoCadastro;
-   
+
             //verificar se o cadastro existe
             strQuery = string.Format("select * from cliente WHERE num_documento = '{0}' LIMIT 1", cliente.numDocumento.ToString());
 
-           
+
             using (contexto = new Contexto())
             {
                 var reader = contexto.ExecutaComandoComRetorno(strQuery.ToString());
@@ -429,7 +427,7 @@ namespace Generico.Aplicacao
                 strQuery += string.Format(" '{0}',  ", DateTime.Now.ToString("MM-dd-yyyy"));
                 strQuery += string.Format(" '{0}',  ", cliente.genero);
                 strQuery += string.Format(" '{0}',  ", cliente.ddd);
-                strQuery += string.Format(" '{0}',  ", cliente.telefone );
+                strQuery += string.Format(" '{0}',  ", cliente.telefone);
                 strQuery += string.Format(" '{0}',  ", cliente.endereco);
                 strQuery += string.Format(" '{0}',  ", cliente.numero);
                 strQuery += string.Format(" '{0}',  ", cliente.bairro);
@@ -440,7 +438,7 @@ namespace Generico.Aplicacao
                 strQuery += string.Format(" '{0}'   ", cliente.cidade.estado.sigla);
                 strQuery += string.Format(" ) ");
                 strQuery += string.Format("; select * from cliente where num_documento = '{0}' order by id_cliente desc LIMIT 1", cliente.numDocumento);
-         }
+            }
             else
             {
 
@@ -465,7 +463,7 @@ namespace Generico.Aplicacao
                 strQuery += string.Format(" estado                =  '{0}'   ", cliente.cidade.estado.sigla);
                 strQuery += string.Format(" where  num_documento = '{0}'  ", cliente.numDocumento);
                 strQuery += string.Format("; select * from cliente where num_documento = '{0}' order by id_cliente desc LIMIT 1", cliente.numDocumento);
-       }
+            }
 
             using (contexto = new Contexto())
             {
@@ -513,7 +511,7 @@ namespace Generico.Aplicacao
             )
         {
 
-            if(string.IsNullOrEmpty(faixa_desconto))
+            if (string.IsNullOrEmpty(faixa_desconto))
             {
                 faixa_desconto = "0";
             }
@@ -527,7 +525,7 @@ namespace Generico.Aplicacao
             var strQuery = "";
 
             strQuery = "";
-            strQuery += " INSERT INTO pedidos (id_tipo_pedido,dt_pedido,situacao,valor_total,faixa_desconto,valor_desconto,valor_final_pedido,flg_cobrar_frete,valor_frete,servico_entrega,forma_entrega,id_cliente,numero_pedido_ezitus)";                    
+            strQuery += " INSERT INTO pedidos (id_tipo_pedido,dt_pedido,situacao,valor_total,faixa_desconto,valor_desconto,valor_final_pedido,flg_cobrar_frete,valor_frete,servico_entrega,forma_entrega,id_cliente,numero_pedido_ezitus)";
             strQuery += " VALUES ( ";
             strQuery += string.Format(" '{0}', ", tipoPedido);
             strQuery += string.Format(" '{0}', ", DateTime.Now.ToString("yyyy-MM-dd 23:59:00.000"));
@@ -561,67 +559,40 @@ namespace Generico.Aplicacao
         }
 
 
-        public void GravaItensPedido(string CodigoCabecahoPedido)
+
+        public void GravaItensPedido(string CodigoCabecalhoPedido, List<Item> itens)
         {
 
-            var strQuery = "";
-            List<Item> listaItens = new List<Item>();
-            
-            foreach (var item in listaItens)
+            var strQuery = new StringBuilder();
+
+            foreach (var item in itens)
             {
-                strQuery = "";
+                // consulta se o produto existe no cadastro
+                int IdProduto = Convert.ToInt32(ConsultaProduto(item.produto.codigo));
+
+                if (IdProduto > 0)
+                {
+                    strQuery.Clear();
+                    strQuery.Append("INSERT INTO itens_pedido (numero_pedido,item,id_plano,descricao_item,valor_unitario,qtde, valor_total,pontos,id_produto)  ")
+                            .Append("VALUES (")
+                            .Append(CodigoCabecalhoPedido).Append(",")
+                            .Append(item.item).Append(",")
+                            .Append(item.plano ?? "null").Append(",")
+                            .Append("'").Append(item.descricaoItem).Append("',")
+                            .Append(item.valorUnitario.ToString().Replace(',', '.')).Append(",")
+                            .Append(item.qtde).Append(",")
+                            .Append(item.valorTotal.ToString().Replace(',', '.')).Append(",")
+                            .Append(item.pontos).Append(",")
+                            .Append(item.produto.id).Append("); ");
+                }
+
             }
 
-
-
-            //var strQuery = "";
-            // foreach (Item itens in (List<Item>))
-            //{
-
-            //}
-
-
-
-            //for (int i = 0; i < itens.Count; i++)
-            //{
-
-            //    // consulta se o produto existe no cadastro
-            //    int IdProduto = Convert.ToInt32(ConsultaProduto(itens[i].produto.codigo));
-
-            //    if (IdProduto > 0)
-            //    {
-            //        strQuery.Clear();
-            //        strQuery.Append("INSERT INTO itens_pedido (numero_pedido,item,id_plano,descricao_item,valor_unitario,qtde, valor_total,pontos,id_produto)  ")
-            //                .Append("VALUES (")
-            //                .Append(itens[i].idItemPedido).Append(",")
-            //                .Append(itens[i].item).Append(",")
-            //                .Append(itens[i].plano).Append(",")
-            //                .Append("'").Append(itens[i].descricaoItem).Append("',")
-            //                .Append(itens[i].valorUnitario).Append(",")
-            //                .Append(itens[i].qtde).Append(",")
-            //                .Append(itens[i].valorTotal).Append(",")
-            //                .Append(itens[i].pontos).Append(",")
-            //                .Append(itens[i].produto.id).Append(")")
-            //                .Append("; select id_item_pedido from itens_pedido order by id_item_pedido desc LIMIT 1");
-            //    }
-
-
-
-            //    using (contexto = new Contexto())
-            //    {
-            //        var reader = contexto.ExecutaComandoComRetorno(strQuery.ToString());
-            //        while (reader.Read())
-            //        {
-            //            //retornar o ID do cliente inserido
-            //            retorno = Convert.ToInt32(reader["id_item_pedido"]);
-            //        }
-            //        reader.Close();
-            //    }
-            //}
+            contexto = new Contexto();
+            contexto.ExecutaComandoComRetorno(strQuery.ToString());
         }
 
+
+      }
+
     }
-
-
-
-}

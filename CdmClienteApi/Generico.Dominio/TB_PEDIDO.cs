@@ -15,14 +15,15 @@ namespace Generico.Dominio
             public string success { get; set; }
             public string errorMessage { get; set; }
             public Answer answer { get; set; }
-
-        }
+           
+       }
 
 
         //classe que recebe os dados
         public class Answer
         {
             public string token { get; set; }
+           
         }
 
 
@@ -65,7 +66,7 @@ namespace Generico.Dominio
             public string formaEntrega { get; set; }
 
             public ClientePedido cliente { get; set; }
-
+            public List<Item> itens { get; set; }
 
         }
 
