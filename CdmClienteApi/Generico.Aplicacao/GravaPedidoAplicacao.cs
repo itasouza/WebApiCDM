@@ -14,6 +14,7 @@ using System.Configuration;
 using static Generico.Dominio.TB_PEDIDO;
 using Generico.Repositorio;
 using System.Globalization;
+using Generico.Dominio;
 
 namespace Generico.Aplicacao
 {
@@ -69,6 +70,7 @@ namespace Generico.Aplicacao
             {
                 string json = streamReader.ReadToEnd();
 
+               
                 Pedido p = JsonConvert.DeserializeObject<Pedido>(json);
     
                 string npedido            = p.answer.numeroPedido;
@@ -94,38 +96,39 @@ namespace Generico.Aplicacao
                 string formaEntrega       = p.answer.formaEntrega;
 
 
-               string CodigoCadastro = GravaCadastro(p.answer.cliente.cadastro);
-               string CodigoCliente = GravaCliente(p.answer.cliente, CodigoCadastro);
+                string CodigoCadastro = GravaCadastro(p.answer.cliente.cadastro);
+                string CodigoCliente = GravaCliente(p.answer.cliente, CodigoCadastro);
 
 
-                string CodigoCabecahoPedido = GravaCabecalhoPedido(
-                            p.answer.tipoPedido,
-                            p.answer.dtPedido,
-                            p.answer.dtVencimento,
-                            p.answer.idCdm,
-                            p.answer.status,
-                            p.answer.idEnvioUnidade,
-                            p.answer.idFormaEntrega,
-                            p.answer.nomeEntrega,
-                            p.answer.ordemColetaEntrega,
-                            p.answer.rgEntrega,
-                            p.answer.notaFiscal,
-                            p.answer.situacao,
-                            p.answer.valorTotal,
-                            p.answer.faixaDesconto,
-                            p.answer.valorDesconto,
-                            p.answer.valorFinalPedido,
-                            p.answer.flgCobrarFrete,
-                            p.answer.valorFrete,
-                            p.answer.servicoEntrega,
-                            p.answer.formaEntrega,
-                            CodigoCliente,
-                            p.answer.numeroPedido
+                // string CodigoCabecahoPedido = GravaCabecalhoPedido(
+                //             p.answer.tipoPedido,
+                //             p.answer.dtPedido,
+                //             p.answer.dtVencimento,
+                //             p.answer.idCdm,
+                //             p.answer.status,
+                //             p.answer.idEnvioUnidade,
+                //             p.answer.idFormaEntrega,
+                //             p.answer.nomeEntrega,
+                //             p.answer.ordemColetaEntrega,
+                //             p.answer.rgEntrega,
+                //             p.answer.notaFiscal,
+                //             p.answer.situacao,
+                //             p.answer.valorTotal,
+                //             p.answer.faixaDesconto,
+                //             p.answer.valorDesconto,
+                //             p.answer.valorFinalPedido,
+                //             p.answer.flgCobrarFrete,
+                //             p.answer.valorFrete,
+                //             p.answer.servicoEntrega,
+                //             p.answer.formaEntrega,
+                //             CodigoCliente,
+                //             p.answer.numeroPedido
 
-                     );
+                //      );
 
                 //dúvida
-                GravaItensPedido(CodigoCabecahoPedido);
+                string teste = "115873";
+                GravaItensPedido(teste);
 
                 return json;
             }
@@ -314,11 +317,11 @@ namespace Generico.Aplicacao
                 strQuery += string.Format(" '{0}',  ", cadastro.ddd);
                 strQuery += string.Format(" '{0}',  ", cadastro.genero);
                 strQuery += string.Format(" '{0}',  ", cadastro.telefone);
+                strQuery += string.Format(" '{0}',  ", cadastro.bairro);
+                strQuery += string.Format(" '{0}',  ", cadastro.cep);
                 strQuery += string.Format(" '{0}',  ", cadastro.endereco);
                 strQuery += string.Format(" '{0}',  ", cadastro.complemento);
                 strQuery += string.Format(" '{0}',  ", cadastro.numero);
-                strQuery += string.Format(" '{0}',  ", cadastro.bairro);
-                strQuery += string.Format(" '{0}',  ", cadastro.cep);
                 strQuery += string.Format(" '{0}',  ", cidade);
                 strQuery += string.Format(" '{0}',  ", cadastro.tipoPessoa);
                 strQuery += string.Format(" '{0}',  ", DateTime.Now.ToString("MM-dd-yyy"));
@@ -367,6 +370,7 @@ namespace Generico.Aplicacao
                 strQuery += string.Format(" apto_para_saque  = '{0}',  ", "true");
                 strQuery += string.Format(" docs_submetidos    = '{0}',  ", "true");
                 strQuery += string.Format(" categoria_cadastro = '{0}'  ", "NA");
+                strQuery += string.Format(" where  num_documento = '{0}'  ", cadastro.numDocumento);
                 strQuery += string.Format("; select * from cadastro where num_documento = '{0}' LIMIT 1", cadastro.numDocumento);
 
      
@@ -422,7 +426,7 @@ namespace Generico.Aplicacao
                 strQuery += string.Format(" '{0}',  ", cliente.tipoDocumento);
                 strQuery += string.Format(" '{0}',  ", cliente.numDocumento);
                 strQuery += string.Format(" '{0}',  ", cliente.email);
-                strQuery += string.Format(" '{0}',  ", DateTime.Now.ToString("MM-dd-yyy"));
+                strQuery += string.Format(" '{0}',  ", DateTime.Now.ToString("MM-dd-yyyy"));
                 strQuery += string.Format(" '{0}',  ", cliente.genero);
                 strQuery += string.Format(" '{0}',  ", cliente.ddd);
                 strQuery += string.Format(" '{0}',  ", cliente.telefone );
@@ -447,7 +451,7 @@ namespace Generico.Aplicacao
                 strQuery += string.Format(" tipo_documento = '{0}',  ", cliente.tipoDocumento);
                 strQuery += string.Format(" num_documento  = '{0}',  ", cliente.numDocumento);
                 strQuery += string.Format(" email          = '{0}',  ", cliente.email);
-                strQuery += string.Format(" dt_nascimento  = '{0}',  ", DateTime.Now.ToString("MM-dd-yyy"));
+                strQuery += string.Format(" dt_nascimento  = '{0}',  ", DateTime.Now.ToString("MM-dd-yyyy"));
                 strQuery += string.Format(" genero         = '{0}',  ", cliente.genero);
                 strQuery += string.Format(" ddd            = '{0}',  ", cliente.ddd);
                 strQuery += string.Format(" telefone       = '{0}',  ", cliente.telefone);
@@ -459,6 +463,7 @@ namespace Generico.Aplicacao
                 strQuery += string.Format(" tipo_endereco_entrega =  '{0}',  ", cliente.tipoEnderecoEntrega);
                 strQuery += string.Format(" orientacao_entregador =  '{0}',  ", cliente.orientacaoEntregador);
                 strQuery += string.Format(" estado                =  '{0}'   ", cliente.cidade.estado.sigla);
+                strQuery += string.Format(" where  num_documento = '{0}'  ", cliente.numDocumento);
                 strQuery += string.Format("; select * from cliente where num_documento = '{0}' order by id_cliente desc LIMIT 1", cliente.numDocumento);
        }
 
@@ -559,7 +564,14 @@ namespace Generico.Aplicacao
         public void GravaItensPedido(string CodigoCabecahoPedido)
         {
 
-         
+            var strQuery = "";
+            List<Item> listaItens = new List<Item>();
+            
+            foreach (var item in listaItens)
+            {
+                strQuery = "";
+            }
+
 
 
             //var strQuery = "";
