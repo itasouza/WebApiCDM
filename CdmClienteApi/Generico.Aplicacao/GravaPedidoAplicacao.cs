@@ -435,7 +435,7 @@ namespace Generico.Aplicacao
                 strQuery += string.Format(" '{0}',  ", cliente.orientacaoEntregador);
                 strQuery += string.Format(" '{0}'   ", cliente.cidade.estado.sigla);
                 strQuery += string.Format(" ) ");
-                strQuery += string.Format("; select * from cliente where num_documento = '{0}' LIMIT 1", cliente.numDocumento);
+                strQuery += string.Format("; select * from cliente where num_documento = '{0}' order by id_cliente desc LIMIT 1", cliente.numDocumento);
          }
             else
             {
@@ -459,7 +459,7 @@ namespace Generico.Aplicacao
                 strQuery += string.Format(" tipo_endereco_entrega =  '{0}',  ", cliente.tipoEnderecoEntrega);
                 strQuery += string.Format(" orientacao_entregador =  '{0}',  ", cliente.orientacaoEntregador);
                 strQuery += string.Format(" estado                =  '{0}'   ", cliente.cidade.estado.sigla);
-                strQuery += string.Format("; select * from cliente where num_documento = '{0}' LIMIT 1", cliente.numDocumento);
+                strQuery += string.Format("; select * from cliente where num_documento = '{0}' order by id_cliente desc LIMIT 1", cliente.numDocumento);
        }
 
             using (contexto = new Contexto())
@@ -559,13 +559,16 @@ namespace Generico.Aplicacao
         public void GravaItensPedido(string CodigoCabecahoPedido)
         {
 
+         
+
+
             //var strQuery = "";
             // foreach (Item itens in (List<Item>))
             //{
 
             //}
 
-          
+
 
             //for (int i = 0; i < itens.Count; i++)
             //{
